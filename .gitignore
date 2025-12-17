@@ -1,0 +1,17 @@
+# קבצים של IntelliJ
+.idea/
+*.iml
+out/
+gen/
+
+# קבצי מערכת הפעלה
+Thumbs.db
+.DS_Store
+
+# קבצי לוג וזמניים
+*.log
+*.tmp
+
+# תיקיות בנייה (אם תשתמש ב-Maven או Gradle בעתיד)
+target/
+build/
