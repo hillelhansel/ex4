@@ -1,5 +1,5 @@
 # קבצים של IntelliJ
-.idea/
+idea/
 *.iml
 out/
 gen/
