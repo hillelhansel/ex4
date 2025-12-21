@@ -13,7 +13,7 @@ public class IDLEState implements AvatarState {
 
     @Override
     public void update(UserInputListener input, Avatar avatar) {
-        avatar.restoreEnergy(1);
+        avatar.restoreEnergy(1f);
         avatar.transform().setVelocityX(0);
     }
 

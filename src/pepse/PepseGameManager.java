@@ -14,6 +14,7 @@ import pepse.world.Block;
 import pepse.world.Sky;
 import pepse.world.Terrain;
 import pepse.world.avatar.Avatar;
+import pepse.world.avatar.EnergyUI;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
@@ -44,7 +45,11 @@ public class PepseGameManager extends GameManager {
         GameObject sunHalo = SunHalo.create(sun);
         gameObjects().addGameObject(sunHalo, Layer.BACKGROUND + 1);
 
-        GameObject avatar = new Avatar(new Vector2(windowController.getWindowDimensions().x()/2, terrain.getGroundHeightAt(windowController.getWindowDimensions().x()/2)), inputListener, imageReader);
+        GameObject energyUI = new EnergyUI();
+        gameObjects().addGameObject(energyUI, Layer.UI);
+
+        GameObject avatar = new Avatar(new Vector2(windowController.getWindowDimensions().x()/2, terrain.getGroundHeightAt(windowController.getWindowDimensions().x()/2)),
+                                            inputListener, imageReader, energyUI::update);
         gameObjects().addGameObject(avatar, Layer.DEFAULT);
         setCamera(new Camera(avatar, Vector2.ZERO,
                 windowController.getWindowDimensions(), windowController.getWindowDimensions()));

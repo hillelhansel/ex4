@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 public class RunState implements AvatarState {
 
     private static final float SPEED = 400;
-    public static final int RUN_ENERGY_COST = 2;
+    public static final float RUN_ENERGY_COST = 2f;
 
     @Override
     public void onEnter(Avatar avatar) {
