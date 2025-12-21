@@ -5,6 +5,7 @@ import danogl.collisions.Collision;
 import danogl.gui.ImageReader;
 import danogl.gui.UserInputListener;
 
+import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 
 import javax.swing.*;
@@ -17,6 +18,8 @@ public class Avatar extends GameObject {
     private static final Vector2 AVATAR_DIMENSIONS = new Vector2(60, 100);
     private static final float GRAVITY = 800;
 
+    private final Animation animation;
+
     private final Energy energy;
     private final Consumer<Float> onEnergyChange;
 
@@ -24,8 +27,8 @@ public class Avatar extends GameObject {
     private final AvatarState idleState = new IDLEState();
     private final AvatarState runState  = new RunState();
     private final AvatarState jumpState = new JumpState();
-
     private AvatarState currentState;
+
 
     public Avatar(Vector2 topLeftCorner, UserInputListener input, ImageReader imageReader, Consumer<Float> onEnergyChange) {
         super(topLeftCorner.subtract(AVATAR_DIMENSIONS.add(new Vector2(0, 40))),
@@ -36,6 +39,7 @@ public class Avatar extends GameObject {
         this.energy = new Energy(onEnergyChange);
         this.currentState = idleState;
         this.onEnergyChange = onEnergyChange;
+        this.animation = new Animation(imageReader);
 
         transform().setAccelerationY(GRAVITY);
         physics().preventIntersectionsFromDirection(Vector2.ZERO);
@@ -85,6 +89,10 @@ public class Avatar extends GameObject {
         }
 
         return idleState;
+    }
+
+    public Renderable getAnimation(String animationName) {
+        return animation.getAnimation(animationName);
     }
 
     private void changeState(AvatarState newState) {

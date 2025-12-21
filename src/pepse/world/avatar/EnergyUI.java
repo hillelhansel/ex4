@@ -2,7 +2,6 @@ package pepse.world.avatar;
 
 import danogl.GameObject;
 import danogl.components.CoordinateSpace;
-import danogl.gui.rendering.Renderable;
 import danogl.gui.rendering.TextRenderable;
 import danogl.util.Vector2;
 

@@ -6,9 +6,7 @@ public class IDLEState implements AvatarState {
 
     @Override
     public void onEnter(Avatar avatar) {
-//        avatar.renderer().setRenderable(
-//                AnimationLibrary.idle()
-//        );
+        avatar.renderer().setRenderable(avatar.getAnimation("idle"));
     }
 
     @Override

@@ -11,9 +11,7 @@ public class RunState implements AvatarState {
 
     @Override
     public void onEnter(Avatar avatar) {
-//        avatar.renderer().setRenderable(
-//                AnimationLibrary.run()
-//        );
+        avatar.renderer().setRenderable(avatar.getAnimation("run"));
     }
 
     @Override
@@ -22,10 +20,12 @@ public class RunState implements AvatarState {
 
         if (input.isKeyPressed(KeyEvent.VK_RIGHT)) {
             xVel += SPEED;
+            avatar.renderer().setIsFlippedHorizontally(false);
         }
 
         if (input.isKeyPressed(KeyEvent.VK_LEFT)) {
             xVel -= SPEED;
+            avatar.renderer().setIsFlippedHorizontally(true);
         }
 
         avatar.transform().setVelocityX(xVel);

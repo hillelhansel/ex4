@@ -14,10 +14,7 @@ public class JumpState implements AvatarState {
     @Override
     public void onEnter(Avatar avatar) {
         avatar.transform().setVelocityX(0);
-
-//        avatar.renderer().setRenderable(
-//                AnimationLibrary.jump()
-//        );
+        avatar.renderer().setRenderable(avatar.getAnimation("jump"));
     }
 
     @Override
