@@ -1,6 +1,7 @@
 package pepse.world.trees;
 
 import danogl.GameObject;
+import danogl.components.ScheduledTask;
 import danogl.util.Vector2;
 import pepse.world.Block;
 
@@ -48,9 +49,9 @@ public class Tree {
                 if(random.nextFloat() < 0.7f){
                     Vector2 topLeft = FoliageStartingPosition.subtract(new Vector2(i * Block.SIZE, j * Block.SIZE));
 
-                    GameObject leafBlock = new Leaf(topLeft);
-                    leafBlock.setTag("leaf");
-                    leafs.add(leafBlock);
+                    GameObject leaf = new Leaf(topLeft);
+                    leaf.setTag("leaf");
+                    leafs.add(leaf);
                 }
             }
         }

@@ -10,6 +10,7 @@ import java.awt.*;
 
 public class Night {
     private static final Float MIDNIGHT_OPACITY = 0.5f;
+
     public static GameObject create(Vector2 windowDimensions, float cycleLength){
         GameObject night = new GameObject(Vector2.ZERO, windowDimensions, new RectangleRenderable(Color.BLACK));
         night.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
