@@ -18,7 +18,10 @@ import pepse.world.avatar.EnergyUI;
 import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
+import pepse.world.trees.Flora;
+import pepse.world.trees.Tree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PepseGameManager extends GameManager {
@@ -30,14 +33,11 @@ public class PepseGameManager extends GameManager {
         GameObject sky = Sky.create(windowController.getWindowDimensions());
         gameObjects().addGameObject(sky, Layer.BACKGROUND);
 
-        Terrain terrain = new Terrain(windowController.getWindowDimensions(), 1);
-        List<Block> blocks = terrain.createInRange(0, (int) windowController.getWindowDimensions().x());
-        for  (Block block : blocks) {
-            gameObjects().addGameObject(block, Layer.STATIC_OBJECTS);
-        }
-
         GameObject night = Night.create(windowController.getWindowDimensions(), DAY_LENGTH);
         gameObjects().addGameObject(night, Layer.FOREGROUND);
+
+        EnergyUI energyUI = new EnergyUI();
+        gameObjects().addGameObject(energyUI, Layer.UI);
 
         GameObject sun = Sun.create(windowController.getWindowDimensions(), DAY_LENGTH);
         gameObjects().addGameObject(sun, Layer.BACKGROUND);
@@ -45,12 +45,22 @@ public class PepseGameManager extends GameManager {
         GameObject sunHalo = SunHalo.create(sun);
         gameObjects().addGameObject(sunHalo, Layer.BACKGROUND + 1);
 
-        EnergyUI energyUI = new EnergyUI();
-        gameObjects().addGameObject(energyUI, Layer.UI);
+        Terrain terrain = new Terrain(windowController.getWindowDimensions(), 1);
+        List<Block> blocks = terrain.createInRange(0, (int) windowController.getWindowDimensions().x());
+        for  (Block block : blocks) {
+            gameObjects().addGameObject(block, Layer.STATIC_OBJECTS);
+        }
+
+        Flora flora = new Flora(terrain::getGroundHeightAt);
+        ArrayList<Tree> forrest = flora.createInRange(0, (int) windowController.getWindowDimensions().x());
+        for (Tree tree : forrest) {
+            for tree.getTrunk().getPart
+        }
 
         GameObject avatar = new Avatar(new Vector2(windowController.getWindowDimensions().x()/2, terrain.getGroundHeightAt(windowController.getWindowDimensions().x()/2)),
                                             inputListener, imageReader, energyUI::updateEnergy);
         gameObjects().addGameObject(avatar, Layer.DEFAULT);
+
         setCamera(new Camera(avatar, Vector2.ZERO,
                 windowController.getWindowDimensions(), windowController.getWindowDimensions()));
     }

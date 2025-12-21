@@ -21,7 +21,6 @@ public class Avatar extends GameObject {
     private final Animation animation;
 
     private final Energy energy;
-    private final Consumer<Float> onEnergyChange;
 
     private final UserInputListener input;
     private final AvatarState idleState = new IDLEState();
@@ -38,7 +37,6 @@ public class Avatar extends GameObject {
         this.input = input;
         this.energy = new Energy(onEnergyChange);
         this.currentState = idleState;
-        this.onEnergyChange = onEnergyChange;
         this.animation = new Animation(imageReader);
 
         transform().setAccelerationY(GRAVITY);

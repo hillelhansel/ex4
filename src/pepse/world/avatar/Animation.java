@@ -7,7 +7,7 @@ import danogl.gui.rendering.Renderable;
 import java.util.HashMap;
 
 public class Animation {
-    private HashMap<String, Renderable> animations;
+    private final HashMap<String, Renderable> animations;
 
     Animation(ImageReader imageReader) {
         this.animations = new HashMap<>();
