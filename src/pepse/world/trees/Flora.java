@@ -25,8 +25,7 @@ public class Flora {
             Random random = new Random(Objects.hash(locationX, 5));
             if(random.nextFloat() < 0.1f){
                 int groundHeight = (int) Math.floor(groundHeightAt.apply((float) locationX));
-                int treeHeight = random.nextInt(4) + 4;
-                trees.add(new Tree(locationX, groundHeight, treeHeight));
+                trees.add(new Tree(locationX, groundHeight));
             }
         }
         return trees;

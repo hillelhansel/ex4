@@ -54,7 +54,17 @@ public class PepseGameManager extends GameManager {
         Flora flora = new Flora(terrain::getGroundHeightAt);
         ArrayList<Tree> forrest = flora.createInRange(0, (int) windowController.getWindowDimensions().x());
         for (Tree tree : forrest) {
-            for tree.getTrunk().getPart
+            for (GameObject object : tree.getTrunk()){
+                gameObjects().addGameObject(object, Layer.STATIC_OBJECTS);
+            }
+
+            for (GameObject object : tree.getLeafs()){
+                gameObjects().addGameObject(object, Layer.BACKGROUND);
+            }
+
+            for (GameObject object : tree.getFruits()){
+                gameObjects().addGameObject(object, Layer.DEFAULT);
+            }
         }
 
         GameObject avatar = new Avatar(new Vector2(windowController.getWindowDimensions().x()/2, terrain.getGroundHeightAt(windowController.getWindowDimensions().x()/2)),

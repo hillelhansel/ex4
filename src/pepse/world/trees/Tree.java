@@ -5,24 +5,73 @@ import danogl.util.Vector2;
 import pepse.world.Block;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Random;
+import java.util.Vector;
 
 public class Tree {
-    private ArrayList<GameObject> trunk;
-    private ArrayList<GameObject> leafs;
-    private ArrayList<GameObject> fruits;
+    private static final int FOLIAGE_SIZE = 8;
 
-    public Tree(float locationX, int groundHeight, int treeHeight) {
+    private final ArrayList<GameObject> trunk;
+    private final ArrayList<GameObject> leafs;
+    private final ArrayList<GameObject> fruits;
+
+    private Random random;
+
+    public Tree(float locationX, int groundHeight) {
+        this.random = new Random(Objects.hash(locationX, 5));
+        int treeHeight = random.nextInt(4) + 4;
         this.trunk = createTrunk(locationX, groundHeight, treeHeight);
-        this.leafs = createLeafs();
-        this.fruits = createFruits();
+
+        Vector2 FoliageStartingPosition = new Vector2((float) (locationX + 3.5 * Block.SIZE), groundHeight - treeHeight * Block.SIZE);
+        this.leafs = createLeafs(FoliageStartingPosition);
+        this.fruits = createFruits(FoliageStartingPosition);
+
     }
 
-    private ArrayList<GameObject> createLeafs(float locationX, int groundHeight, int treeHeight) {
-
+    public ArrayList<GameObject> getTrunk() {
+        return trunk;
     }
 
-    private ArrayList<GameObject> createFruits(float locationX, int groundHeight, int treeHeight) {
+    public ArrayList<GameObject> getLeafs() {
+        return leafs;
+    }
+    public ArrayList<GameObject> getFruits() {
+        return fruits;
+    }
 
+    private ArrayList<GameObject> createLeafs(Vector2 FoliageStartingPosition) {
+        ArrayList<GameObject> leafs = new ArrayList<>();
+
+        for (int i =  0; i < FOLIAGE_SIZE; i++) {
+            for (int j =  0; j < FOLIAGE_SIZE; j++) {
+                if(random.nextFloat() < 0.7f){
+                    Vector2 topLeft = FoliageStartingPosition.subtract(new Vector2(i * Block.SIZE, j * Block.SIZE));
+
+                    GameObject leafBlock = new Leaf(topLeft);
+                    leafBlock.setTag("leaf");
+                    leafs.add(leafBlock);
+                }
+            }
+        }
+        return leafs;
+    }
+
+    private ArrayList<GameObject> createFruits(Vector2 FoliageStartingPosition) {
+        ArrayList<GameObject> fruits = new ArrayList<>();
+
+        for (int i =  0; i < FOLIAGE_SIZE; i++) {
+            for (int j =  0; j < FOLIAGE_SIZE; j++) {
+                if(random.nextFloat() < 0.05f){
+                    Vector2 topLeft = FoliageStartingPosition.subtract(new Vector2(i * Block.SIZE, j * Block.SIZE));
+
+                    GameObject leafBlock = new Fruit(topLeft);
+                    leafBlock.setTag("fruit");
+                    fruits.add(leafBlock);
+                }
+            }
+        }
+        return fruits;
     }
 
     private ArrayList<GameObject> createTrunk(float locationX, int groundHeight, int treeHeight) {
