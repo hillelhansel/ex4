@@ -45,11 +45,11 @@ public class PepseGameManager extends GameManager {
         GameObject sunHalo = SunHalo.create(sun);
         gameObjects().addGameObject(sunHalo, Layer.BACKGROUND + 1);
 
-        GameObject energyUI = new EnergyUI();
+        EnergyUI energyUI = new EnergyUI();
         gameObjects().addGameObject(energyUI, Layer.UI);
 
         GameObject avatar = new Avatar(new Vector2(windowController.getWindowDimensions().x()/2, terrain.getGroundHeightAt(windowController.getWindowDimensions().x()/2)),
-                                            inputListener, imageReader, energyUI::update);
+                                            inputListener, imageReader, energyUI::updateEnergy);
         gameObjects().addGameObject(avatar, Layer.DEFAULT);
         setCamera(new Camera(avatar, Vector2.ZERO,
                 windowController.getWindowDimensions(), windowController.getWindowDimensions()));

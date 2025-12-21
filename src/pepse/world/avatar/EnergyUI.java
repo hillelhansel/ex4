@@ -21,7 +21,7 @@ public class EnergyUI extends GameObject{
         this.renderer().setRenderable(energyRenderable);
     }
 
-    public void update(Float newEnergy) {
-        energyRenderable.setString(String.format("Energy: %.0f%%", newEnergy));
+    public void updateEnergy(Float newEnergy) {
+        energyRenderable.setString(String.format("%.0f%%", newEnergy));
     }
 }
