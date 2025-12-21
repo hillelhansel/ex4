@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 public class RunState implements AvatarState {
 
     private static final float SPEED = 400;
+    public static final int RUN_ENERGY_COST = 2;
 
     @Override
     public void onEnter(Avatar avatar) {
@@ -22,14 +23,15 @@ public class RunState implements AvatarState {
         if (input.isKeyPressed(KeyEvent.VK_RIGHT)) {
             xVel += SPEED;
         }
+
         if (input.isKeyPressed(KeyEvent.VK_LEFT)) {
             xVel -= SPEED;
         }
 
         avatar.transform().setVelocityX(xVel);
 
-        if (avatar.isOnGround() && xVel != 0 && avatar.hasEnergy(2)) {
-            avatar.consumeEnergy(2);
+        if (avatar.isOnGround() && xVel != 0) {
+            avatar.consumeEnergy(RUN_ENERGY_COST);
         }
     }
 

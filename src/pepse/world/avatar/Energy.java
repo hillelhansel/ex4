@@ -2,10 +2,12 @@ package pepse.world.avatar;
 
 public class Energy {
     private static final int MAX_ENERGY = 100;
+    private static final int MIN_ENERGY = 0;
+
     private int currentEnergy = MAX_ENERGY;
 
-    public void reduceEnergy(int energy) {
-        if (currentEnergy > 0) {
+    public void consumeEnergy(int energy) {
+        if (currentEnergy > MIN_ENERGY) {
             currentEnergy -= energy;
         }
     }

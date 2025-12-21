@@ -8,6 +8,8 @@ public class JumpState implements AvatarState {
 
     private static final float JUMP_VELOCITY = -650;
     private boolean spaceWasPressed = false;
+    public static final int ONE_JUMP_ENERGY_COST = 20;
+    public static final int DOUBLE_JUMP_ENERGY_COST = 50;
 
     @Override
     public void onEnter(Avatar avatar) {
@@ -24,12 +26,12 @@ public class JumpState implements AvatarState {
 
         if (spacePressed && !spaceWasPressed) {
 
-            if (avatar.isOnGround() && avatar.hasEnergy(20)) {
-                avatar.consumeEnergy(20);
+            if (avatar.isOnGround() && avatar.hasEnergy(ONE_JUMP_ENERGY_COST)) {
+                avatar.consumeEnergy(ONE_JUMP_ENERGY_COST);
                 avatar.transform().setVelocityY(JUMP_VELOCITY);
             }
-            else if (!avatar.isOnGround() && avatar.hasEnergy(50)) {
-                avatar.consumeEnergy(50);
+            if (avatar.hasEnergy(DOUBLE_JUMP_ENERGY_COST) && avatar.isFalling()) {
+                avatar.consumeEnergy(DOUBLE_JUMP_ENERGY_COST);
                 avatar.transform().setVelocityY(JUMP_VELOCITY);
             }
         }

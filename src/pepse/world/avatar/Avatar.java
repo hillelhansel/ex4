@@ -1,6 +1,7 @@
 package pepse.world.avatar;
 
 import danogl.GameObject;
+import danogl.collisions.Collision;
 import danogl.gui.ImageReader;
 import danogl.gui.UserInputListener;
 
@@ -17,16 +18,13 @@ public class Avatar extends GameObject {
 
     private final UserInputListener input;
     private final Energy energy;
-
     private final AvatarState idleState = new IDLEState();
     private final AvatarState runState  = new RunState();
     private final AvatarState jumpState = new JumpState();
+
     private AvatarState currentState;
 
-    public Avatar(Vector2 topLeftCorner,
-                  UserInputListener input,
-                  ImageReader imageReader) {
-
+    public Avatar(Vector2 topLeftCorner, UserInputListener input, ImageReader imageReader) {
         super(topLeftCorner.subtract(AVATAR_DIMENSIONS.add(new Vector2(0, 40))),
                 AVATAR_DIMENSIONS,
                 imageReader.readImage("assets/avatar/idle_0.png", true));
@@ -39,7 +37,13 @@ public class Avatar extends GameObject {
         physics().preventIntersectionsFromDirection(Vector2.ZERO);
     }
 
-
+    @Override
+    public void onCollisionEnter(GameObject other, Collision collision) {
+        super.onCollisionEnter(other, collision);
+        if(other.getTag().equals("ground")) {
+            transform().setVelocityY(0);
+        }
+    }
 
     @Override
     public void update(float deltaTime) {
@@ -57,8 +61,9 @@ public class Avatar extends GameObject {
         boolean onGround = isOnGround();
 
         if (!onGround) {
-
-            if (input.isKeyPressed(KeyEvent.VK_SPACE) && canEnterJump()) {
+            if (input.isKeyPressed(KeyEvent.VK_SPACE)
+                    && hasEnergy(JumpState.DOUBLE_JUMP_ENERGY_COST)
+                    && isFalling()) {
                 return jumpState;
             }
 
@@ -69,33 +74,27 @@ public class Avatar extends GameObject {
             return jumpState;
         }
 
-        if (input.isKeyPressed(KeyEvent.VK_SPACE) && canEnterJump()) {
+        if (input.isKeyPressed(KeyEvent.VK_SPACE) && hasEnergy(JumpState.ONE_JUMP_ENERGY_COST)) {
             return jumpState;
         }
 
-        if (hasHorizontalInput && canEnterRun()) {
+        if (hasHorizontalInput && hasEnergy(RunState.RUN_ENERGY_COST)) {
             return runState;
         }
 
         return idleState;
     }
 
-
     private void changeState(AvatarState newState) {
-        if (currentState == newState) return;
+        if (currentState == newState){
+            return;
+        }
         currentState = newState;
         currentState.onEnter(this);
     }
 
-    private boolean canEnterRun() {
-        return energy.getEnergy() >= 2;
-    }
-
-    private boolean canEnterJump() {
-        if (isOnGround()) {
-            return energy.getEnergy() >= 20;
-        }
-        return energy.getEnergy() >= 50;
+    public boolean isFalling() {
+        return getVelocity().y() > 0;
     }
 
     private boolean hasHorizontalInput() {
@@ -112,7 +111,7 @@ public class Avatar extends GameObject {
     }
 
     public void consumeEnergy(int amount) {
-        energy.reduceEnergy(amount);
+        energy.consumeEnergy(amount);
     }
 
     public void restoreEnergy(int amount) {
