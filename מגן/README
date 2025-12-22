@@ -1,0 +1,18 @@
+hillel.hansel, tal.wirt
+327136131, 213037500
+
+1. State Pattern
+We will implement the Avatar's behavior using the State Pattern to avoid complex if-else structures within the Update loop.
+
+The Avatar has various states (Idle, Run, Jump), each requiring different animations and logic. Managing multiple boolean flags would result in code that is difficult to maintain and extend.
+We will create an AvatarState interface and separate classes for each state.
+Each state will be responsible for its own specific logic (animation switching, input handling). This will make the code more readable and significantly facilitate the addition of new states in the future without breaking existing code (adhering to the Open/Closed Principle).
+
+2. Functional Programing:
+We will make use of Callbacks between classes that do not need to be aware of each other, in order to adhere to Encapsulation and Decoupling principles.
+
+Flora & Terrain: The Flora class requires the ground height to plant trees, but it does not need access to the entire Terrain object. Instead of passing the whole object, we will pass a specific function to the constructor that returns the height for a given X coordinate.
+
+Avatar & UI (Observer): To update the EnergyUI whenever the Avatar runs or jumps, we will use a Callback. The Avatar will trigger this function upon energy changes without holding a reference to the UI or "knowing" it exists. This maintains a clear separation between game logic and display logic.
+
+Collision Handling (Fruit): Instead of the Fruit class being directly dependent on the Avatar class, we will pass a Function to its constructor. This function will define the consumption conditions externally. This ensures the Fruit class remains completely generic and unaware of specific game logic or energy management.
