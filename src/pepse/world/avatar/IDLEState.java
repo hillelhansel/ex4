@@ -14,10 +14,5 @@ public class IDLEState implements AvatarState {
         avatar.restoreEnergy(1f);
         avatar.transform().setVelocityX(0);
     }
-
-    @Override
-    public String getAnimationName(Avatar avatar) {
-        return "idle";
-    }
 }
 

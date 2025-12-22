@@ -1,14 +1,12 @@
 package pepse.world.trees;
 
 import danogl.GameObject;
-import danogl.components.ScheduledTask;
 import danogl.util.Vector2;
 import pepse.world.Block;
 
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
-import java.util.Vector;
 
 public class Tree {
     private static final int FOLIAGE_SIZE = 8;
@@ -17,7 +15,7 @@ public class Tree {
     private final ArrayList<GameObject> leafs;
     private final ArrayList<GameObject> fruits;
 
-    private Random random;
+    private final Random random;
 
     public Tree(float locationX, int groundHeight) {
         this.random = new Random(Objects.hash(locationX, 5));

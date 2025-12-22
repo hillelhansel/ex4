@@ -13,7 +13,7 @@ public class Terrain {
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
     private static final int TERRAIN_DEPTH = 20;
     private final NoiseGenerator noiseGenerator;
-    private int groundHeightAtX0;
+    private final int groundHeightAtX0;
 
     public Terrain(Vector2 windowsDimensions, int seed) {
         this.groundHeightAtX0 = (int) (windowsDimensions.y() * (2f / 3f));

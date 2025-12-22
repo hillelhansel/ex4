@@ -36,9 +36,4 @@ public class JumpState implements AvatarState {
 
         spaceWasPressed = spacePressed;
     }
-
-    @Override
-    public String getAnimationName(Avatar avatar) {
-        return "jump";
-    }
 }

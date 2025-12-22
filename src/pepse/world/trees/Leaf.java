@@ -12,14 +12,20 @@ import java.util.Random;
 
 public class Leaf extends Block {
     private static final Color LEAF_COLOR = new Color(50, 200, 30);
-    private static final RectangleRenderable LEAF_RENDERABLE = new RectangleRenderable(ColorSupplier.approximateColor(LEAF_COLOR));
 
     public Leaf(Vector2 topLeftCorner) {
-        super(topLeftCorner, LEAF_RENDERABLE);
+        super(topLeftCorner, null);
+
+        RectangleRenderable leafRenderable = new RectangleRenderable(ColorSupplier.approximateColor(LEAF_COLOR));
+        renderer().setRenderable(leafRenderable);
         setTag("leaf");
+
         Random random = new Random();
         float waitTime = random.nextFloat(1.5f);
-        ScheduledTask scheduledTask = new ScheduledTask(this, waitTime, false, this::windMovement);
+        ScheduledTask scheduledTask = new ScheduledTask(this,
+                                                            waitTime,
+                                                        false,
+                                                            this::windMovement);
     }
 
     private void windMovement(){

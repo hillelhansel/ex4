@@ -21,7 +21,7 @@ public class Fruit extends GameObject {
     public boolean eat(){
         if(!isEaten){
             renderer().setOpaqueness(0f);
-            new ScheduledTask(this, 30f, false, () -> respawn());
+            new ScheduledTask(this, 30f, false, this::respawn);
             isEaten = true;
             return true;
         }

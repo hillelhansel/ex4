@@ -34,9 +34,4 @@ public class RunState implements AvatarState {
             avatar.consumeEnergy(RUN_ENERGY_COST);
         }
     }
-
-    @Override
-    public String getAnimationName(Avatar avatar) {
-        return "run";
-    }
 }

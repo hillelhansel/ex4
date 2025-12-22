@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.function.Function;
 
 public class Flora {
-    private Function<Float, Float> groundHeightAt;
+    private final Function<Float, Float> groundHeightAt;
 
     public Flora(Function<Float, Float> groundHeightAt) {
         this.groundHeightAt = groundHeightAt;

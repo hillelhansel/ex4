@@ -72,7 +72,7 @@ public class PepseGameManager extends GameManager {
                 gameObjects().addGameObject(object, Layer.DEFAULT);
             }
         }
-        float startingPointX = windowDimensionX / 2;
+        float startingPointX = windowDimensionX / 2f;
         Vector2 startingPoint = new Vector2(startingPointX, terrain.getGroundHeightAt(startingPointX));
 
         GameObject avatar = new Avatar(startingPoint, inputListener, imageReader, energyUI::updateEnergy);
