@@ -7,6 +7,7 @@ import danogl.gui.UserInputListener;
 
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
+import pepse.world.trees.Fruit;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,6 +49,13 @@ public class Avatar extends GameObject {
         super.onCollisionEnter(other, collision);
         if(other.getTag().equals("ground") && collision.getNormal().y() < 0) {
             transform().setVelocityY(0);
+        }
+
+        if(other.getTag().equals("fruit") && other instanceof Fruit) {
+            Fruit fruit = (Fruit) other;
+            if(fruit.eat()){
+                restoreEnergy(10);
+            }
         }
     }
 

@@ -50,7 +50,6 @@ public class Tree {
                     Vector2 topLeft = FoliageStartingPosition.subtract(new Vector2(i * Block.SIZE, j * Block.SIZE));
 
                     GameObject leaf = new Leaf(topLeft);
-                    leaf.setTag("leaf");
                     leafs.add(leaf);
                 }
             }
@@ -67,7 +66,6 @@ public class Tree {
                     Vector2 topLeft = FoliageStartingPosition.subtract(new Vector2(i * Block.SIZE, j * Block.SIZE));
 
                     GameObject leafBlock = new Fruit(topLeft);
-                    leafBlock.setTag("fruit");
                     fruits.add(leafBlock);
                 }
             }
@@ -83,7 +81,6 @@ public class Tree {
             Vector2 topLeft = new Vector2(locationX, locationY);
 
             GameObject trunkBlock = new Trunk(topLeft);
-            trunkBlock.setTag("trunk");
             trunk.add(trunkBlock);
         }
         return trunk;

@@ -8,6 +8,7 @@ import pepse.utils.ColorSupplier;
 import pepse.world.Block;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Leaf extends Block {
     private static final Color LEAF_COLOR = new Color(50, 200, 30);
@@ -15,7 +16,10 @@ public class Leaf extends Block {
 
     public Leaf(Vector2 topLeftCorner) {
         super(topLeftCorner, LEAF_RENDERABLE);
-        ScheduledTask scheduledTask = new ScheduledTask(this, 1.5f, false, this::windMovement);
+        setTag("leaf");
+        Random random = new Random();
+        float waitTime = random.nextFloat(1.5f);
+        ScheduledTask scheduledTask = new ScheduledTask(this, waitTime, false, this::windMovement);
     }
 
     private void windMovement(){
