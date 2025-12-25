@@ -22,12 +22,18 @@ public class Animation {
         AnimationRenderable runAnimation = new AnimationRenderable(runAssetsPath, imageReader, true, 0.5f);
         AnimationRenderable jumpAnimation = new AnimationRenderable(jumpAssetsPath, imageReader, true, 0.5f);
 
-        animations.put("run", runAnimation);
-        animations.put("idle", idleAnimation);
-        animations.put("jump", jumpAnimation);
+        animations.put(AnimationType.RUN.toString(), runAnimation);
+        animations.put(AnimationType.IDLE.toString(), idleAnimation);
+        animations.put(AnimationType.JUMP.toString(), jumpAnimation);
     }
 
     public Renderable getAnimation(String name) {
         return animations.get(name);
+    }
+
+    public enum AnimationType {
+        RUN,
+        IDLE,
+        JUMP
     }
 }

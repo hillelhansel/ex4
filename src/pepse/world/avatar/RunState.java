@@ -11,7 +11,7 @@ public class RunState implements AvatarState {
 
     @Override
     public void onEnter(Avatar avatar) {
-        avatar.renderer().setRenderable(avatar.getAnimation("run"));
+        avatar.renderer().setRenderable(avatar.getAnimation(Animation.AnimationType.RUN.toString()));
     }
 
     @Override

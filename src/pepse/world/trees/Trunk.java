@@ -2,6 +2,7 @@ package pepse.world.trees;
 
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
+import pepse.utils.GameObjectsTags;
 import pepse.world.Block;
 
 import java.awt.*;
@@ -12,6 +13,6 @@ public class Trunk extends Block {
 
     public Trunk(Vector2 topLeft) {
         super(topLeft, TRUNK_RENDERABLE);
-        setTag("trunk");
+        setTag(GameObjectsTags.TRUNK.toString());
     }
 }

@@ -5,6 +5,7 @@ import danogl.components.Transition;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.utils.ColorSupplier;
+import pepse.utils.GameObjectsTags;
 import pepse.world.Block;
 
 import java.awt.*;
@@ -18,7 +19,7 @@ public class Leaf extends Block {
 
         RectangleRenderable leafRenderable = new RectangleRenderable(ColorSupplier.approximateColor(LEAF_COLOR));
         renderer().setRenderable(leafRenderable);
-        setTag("leaf");
+        setTag(GameObjectsTags.LEAF.toString());
 
         Random random = new Random();
         float waitTime = random.nextFloat(1.5f);

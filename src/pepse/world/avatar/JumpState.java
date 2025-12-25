@@ -6,15 +6,16 @@ import java.awt.event.KeyEvent;
 
 public class JumpState implements AvatarState {
 
-    private static final float JUMP_VELOCITY = -650;
-    private boolean spaceWasPressed = false;
     public static final float ONE_JUMP_ENERGY_COST = 20f;
     public static final float DOUBLE_JUMP_ENERGY_COST = 50f;
+    private static final float JUMP_VELOCITY = -650;
+    private boolean spaceWasPressed;
 
     @Override
     public void onEnter(Avatar avatar) {
         avatar.transform().setVelocityX(0);
-        avatar.renderer().setRenderable(avatar.getAnimation("jump"));
+        avatar.renderer().setRenderable(avatar.getAnimation(Animation.AnimationType.JUMP.toString()));
+        spaceWasPressed = false;
     }
 
     @Override

@@ -51,7 +51,7 @@ public class PepseGameManager extends GameManager {
         GameObject sunHalo = SunHalo.create(sun);
         gameObjects().addGameObject(sunHalo, Layer.BACKGROUND + 1);
 
-        Terrain terrain = new Terrain(windowDimensions, 10);
+        Terrain terrain = new Terrain(windowDimensions, 1);
         List<Block> blocks = terrain.createInRange(-100, windowDimensionX + 100);
         for  (Block block : blocks) {
             gameObjects().addGameObject(block, Layer.STATIC_OBJECTS);
@@ -78,7 +78,8 @@ public class PepseGameManager extends GameManager {
         GameObject avatar = new Avatar(startingPoint, inputListener, imageReader, energyUI::updateEnergy);
         gameObjects().addGameObject(avatar, Layer.DEFAULT);
 
-        setCamera(new Camera(avatar, Vector2.ZERO,
+        Vector2 offset = windowController.getWindowDimensions().mult(0.5f).subtract(startingPoint);
+        setCamera(new Camera(avatar, offset,
                 windowDimensions, windowDimensions));
 
 //        if (avatar.getCenter().x() > startingPointX + 30 ||  avatar.getCenter().x() < startingPointX - 30) {

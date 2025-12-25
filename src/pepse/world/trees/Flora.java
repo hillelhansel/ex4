@@ -26,6 +26,7 @@ public class Flora {
             if(random.nextFloat() < 0.1f){
                 int groundHeight = (int) Math.floor(groundHeightAt.apply((float) locationX));
                 trees.add(new Tree(locationX, groundHeight));
+                locationX += 3 * Block.SIZE;
             }
         }
         return trees;

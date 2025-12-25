@@ -7,6 +7,7 @@ import danogl.gui.UserInputListener;
 
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
+import pepse.utils.GameObjectsTags;
 import pepse.world.trees.Fruit;
 
 import javax.swing.*;
@@ -42,20 +43,14 @@ public class Avatar extends GameObject {
 
         transform().setAccelerationY(GRAVITY);
         physics().preventIntersectionsFromDirection(Vector2.ZERO);
+        setTag(GameObjectsTags.AVATAR.toString());
     }
 
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-        if(other.getTag().equals("ground") && collision.getNormal().y() < 0) {
+        if(other.getTag().equals(GameObjectsTags.GROUND.toString()) && collision.getNormal().y() < 0) {
             transform().setVelocityY(0);
-        }
-
-        if(other.getTag().equals("fruit") && other instanceof Fruit) {
-            Fruit fruit = (Fruit) other;
-            if(fruit.eat()){
-                restoreEnergy(10);
-            }
         }
     }
 

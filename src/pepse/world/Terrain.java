@@ -3,6 +3,7 @@ package pepse.world;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.utils.ColorSupplier;
+import pepse.utils.GameObjectsTags;
 import pepse.utils.NoiseGenerator;
 
 import java.awt.*;
@@ -13,16 +14,17 @@ public class Terrain {
     private static final Color BASE_GROUND_COLOR = new Color(212, 123, 74);
     private static final int TERRAIN_DEPTH = 20;
     private final NoiseGenerator noiseGenerator;
-    private final int groundHeightAtX0;
+    private final float groundHeightAtX0;
 
     public Terrain(Vector2 windowsDimensions, int seed) {
-        this.groundHeightAtX0 = (int) (windowsDimensions.y() * (2f / 3f));
-        noiseGenerator = new NoiseGenerator(seed, groundHeightAtX0);
+        this.groundHeightAtX0 =  windowsDimensions.y() * (2f / 3f);
+        noiseGenerator = new NoiseGenerator(seed, (int) groundHeightAtX0);
     }
 
     public float getGroundHeightAt(float x) {
-        float noise = (float) noiseGenerator.noise(x, Block.SIZE * 7);
-        return groundHeightAtX0 + noise;
+        float noise = (float) noiseGenerator.noise(x, Block.SIZE * 10);
+        float groundHeight = groundHeightAtX0 + noise;
+        return (float) Math.floor(groundHeight / Block.SIZE) * Block.SIZE;
     }
 
     public List<Block> createInRange(int minX, int maxX){
@@ -32,7 +34,7 @@ public class Terrain {
         int normalizedMaxX = normalize(maxX);
 
         for (int x = normalizedMinX; x <= normalizedMaxX; x += Block.SIZE) {
-            int normalizedMinY = (int) (Math.floor(getGroundHeightAt(x)/ Block.SIZE) * Block.SIZE);
+            int normalizedMinY = (int) getGroundHeightAt(x);
 
             for(int i = 0; i < TERRAIN_DEPTH; i++){
                 RectangleRenderable renderable = new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR));
@@ -40,7 +42,7 @@ public class Terrain {
                 Vector2 topLeftCorner = new Vector2(x, y);
 
                 Block block = new Block(topLeftCorner, renderable);
-                block.setTag("ground");
+                block.setTag(GameObjectsTags.GROUND.toString());
                 blocks.add(block);
             }
         }

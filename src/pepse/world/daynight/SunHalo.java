@@ -5,6 +5,7 @@ import danogl.components.CoordinateSpace;
 import danogl.gui.rendering.OvalRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
+import pepse.utils.GameObjectsTags;
 
 import java.awt.*;
 
@@ -17,7 +18,7 @@ public class SunHalo {
         GameObject sunHalo = new GameObject(Vector2.ZERO, Vector2.ONES.mult(SUN_HALO_RADIUS), renderable);
         sunHalo.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         sunHalo.addComponent(deltaTime -> sunHalo.setCenter(sun.getCenter()));
-        sunHalo.setTag("sunHalo");
+        sunHalo.setTag(GameObjectsTags.SUNHALO.toString());
         return sunHalo;
     }
 }
