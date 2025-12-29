@@ -11,10 +11,13 @@ import java.util.Random;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
+/**
+ * Represents a single tree structure in the game world.
+ */
 public class Tree {
     private static final int FOLIAGE_SIZE = 8;
     private static final float LEAF_PROBABILITY = 0.5f;
-    private static final float FRUIT_PROBABILITY = 0.2f;
+    private static final float FRUIT_PROBABILITY = 0.1f;
 
     private final ArrayList<GameObject> trunk;
     private final ArrayList<GameObject> leafs;
@@ -22,6 +25,13 @@ public class Tree {
 
     private final Random random;
 
+    /**
+     * Constructs a new Tree instance.
+     * Generates the trunk, leaves, and fruits based on the specified location and randomness.
+     * @param locationX    The x-coordinate of the tree's base.
+     * @param groundHeight The y-coordinate of the ground where the tree is planted.
+     * @param random       A random number generator used for height and foliage distribution.
+     */
     public Tree(float locationX, int groundHeight, Random random) {
         this.random = random;
         int treeHeight = random.nextInt(4) + 4;
@@ -33,6 +43,11 @@ public class Tree {
         this.fruits = createFoliageObjects(foliageStartingPosition, FRUIT_PROBABILITY, Fruit::new);
     }
 
+    /**
+     * Adds the tree's components to the game using the provided callback.
+     * Distributes trunk, leaves, and fruits to their respective game layers.
+     * @param addGameObjectFunc A callback function to add game objects to specific layers.
+     */
     public void create(BiConsumer<GameObject, Integer> addGameObjectFunc) {
         trunk.forEach(trunkBlock -> addGameObjectFunc.accept(trunkBlock, Layer.STATIC_OBJECTS));
         leafs.forEach(leaf -> addGameObjectFunc.accept(leaf, Layer.BACKGROUND));
@@ -42,14 +57,14 @@ public class Tree {
     private ArrayList<GameObject> createFoliageObjects(Vector2 startPos,
                                                        float probability,
                                                        Function<Vector2,
-                                                       GameObject> objectFactory) {
+                                                               GameObject> objectFactory) {
         ArrayList<GameObject> objects = new ArrayList<>();
 
         for (int i = 0; i < FOLIAGE_SIZE; i++) {
             for (int j = 0; j < FOLIAGE_SIZE; j++) {
                 if (random.nextFloat() < probability) {
                     Vector2 topLeft = startPos.subtract(new Vector2(i * Constants.BLOCK_SIZE,
-                                                                    j * Constants.BLOCK_SIZE));
+                            j * Constants.BLOCK_SIZE));
 
                     GameObject obj = objectFactory.apply(topLeft);
                     objects.add(obj);

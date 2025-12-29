@@ -16,6 +16,9 @@ import pepse.world.avatar.states.RunState;
 import java.awt.event.KeyEvent;
 import java.util.function.Consumer;
 
+/**
+ * Represents the player-controlled character in the game.
+ */
 public class Avatar extends GameObject {
     private static final Vector2 AVATAR_DIMENSIONS = new Vector2(60, 100);
     private static final float GRAVITY = 800;
@@ -33,6 +36,15 @@ public class Avatar extends GameObject {
 
     private float lastPositionX;
 
+    /**
+     * Creates a new Avatar instance.
+     * Initializes the physics, animations, and input listeners for the character.
+     * @param topLeftCorner  The initial starting position of the avatar.
+     * @param input          The listener for reading user keyboard input.
+     * @param imageReader    Used to load the avatar's animation assets.
+     * @param onEnergyChange A callback to update the UI whenever energy levels change.
+     * @param onAvatarMove   A callback triggered when the avatar crosses a chunk boundary, used for infinite world generation.
+     */
     public Avatar(Vector2 topLeftCorner,
                   UserInputListener input,
                   ImageReader imageReader,
@@ -54,6 +66,12 @@ public class Avatar extends GameObject {
         this.lastPositionX = getCenter().x();
     }
 
+    /**
+     * Handles collisions with other game objects.
+     * Specifically detects collisions with the ground to stop vertical movement.
+     * @param other     The object the avatar collided with.
+     * @param collision Information regarding the collision point and normal.
+     */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
@@ -62,6 +80,12 @@ public class Avatar extends GameObject {
         }
     }
 
+    /**
+     * Updates the avatar's logic for the current frame.
+     * Manages state transitions, updates the current state's logic, and checks
+     * if the avatar has moved enough to trigger world generation.
+     * @param deltaTime The time elapsed since the last frame.
+     */
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
@@ -79,6 +103,57 @@ public class Avatar extends GameObject {
             onAvatarMove.accept(false);
             lastPositionX -= Constants.CHUNK_SIZE;
         }
+    }
+
+    /**
+     * Retrieves the specific animation renderable for a given state.
+     * @param animationName The type of animation required (e.g., RUN, JUMP).
+     * @return The Renderable object for the requested animation.
+     */
+    public Renderable getAnimation(Animation.AnimationType animationName) {
+        return animation.getAnimation(animationName);
+    }
+
+    /**
+     * Checks if the avatar is currently falling (moving downwards).
+     * @return True if the vertical velocity is positive (down), false otherwise.
+     */
+    public boolean isFalling() {
+        return getVelocity().y() > 0;
+    }
+
+    /**
+     * Checks if the avatar is currently standing on a solid surface.
+     * Determined by checking if the vertical velocity is effectively zero.
+     * @return True if the avatar is on the ground, false otherwise.
+     */
+    public boolean isOnGround() {
+        return Math.abs(getVelocity().y()) < 1e-3;
+    }
+
+    /**
+     * Checks if the avatar possesses at least the specified amount of energy.
+     * @param amount The amount of energy to check for.
+     * @return True if current energy is greater than or equal to amount.
+     */
+    public boolean hasEnergy(float amount) {
+        return energy.hasEnoughEnergy(amount);
+    }
+
+    /**
+     * Reduces the avatar's energy level by the specified amount.
+     * @param amount The amount of energy to consume.
+     */
+    public void consumeEnergy(float amount) {
+        energy.consumeEnergy(amount);
+    }
+
+    /**
+     * Increases the avatar's energy level by the specified amount.
+     * @param amount The amount of energy to restore.
+     */
+    public void restoreEnergy(float amount) {
+        energy.addEnergy(amount);
     }
 
     private AvatarState decideState() {
@@ -121,9 +196,6 @@ public class Avatar extends GameObject {
         return idleState;
     }
 
-    public Renderable getAnimation(Animation.AnimationType animationName) {
-        return animation.getAnimation(animationName);
-    }
 
     private void changeState(AvatarState newState) {
         if (currentState == newState){
@@ -131,25 +203,5 @@ public class Avatar extends GameObject {
         }
         currentState = newState;
         currentState.onEnter(this);
-    }
-
-    public boolean isFalling() {
-        return getVelocity().y() > 0;
-    }
-
-    public boolean isOnGround() {
-        return Math.abs(getVelocity().y()) < 1e-3;
-    }
-
-    public boolean hasEnergy(float amount) {
-        return energy.hasEnoughEnergy(amount);
-    }
-
-    public void consumeEnergy(float amount) {
-        energy.consumeEnergy(amount);
-    }
-
-    public void restoreEnergy(float amount) {
-        energy.addEnergy(amount);
     }
 }

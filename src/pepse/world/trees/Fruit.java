@@ -11,16 +11,30 @@ import pepse.world.avatar.Avatar;
 
 import java.awt.*;
 
+/**
+ * Represents a fruit object in the game world.
+ */
 class Fruit extends GameObject {
     private final static int FRUIT_RADIUS = Constants.BLOCK_SIZE;
     private static final OvalRenderable renderable = new OvalRenderable(Color.RED);
     private boolean isEaten = false;
 
+    /**
+     * Constructs a new Fruit instance.
+     * @param topLeftCorner The top-left coordinate where the fruit will be placed.
+     */
     public Fruit(Vector2 topLeftCorner) {
         super(topLeftCorner, Vector2.ONES.mult(FRUIT_RADIUS), renderable);
         setTag(GameObjectsTags.FRUIT.toString());
     }
 
+    /**
+     * Handles collision events with other game objects.
+     * If collided with the avatar, the fruit is consumed, restoring energy to the avatar,
+     * and disappears temporarily.
+     * @param other     The object this fruit collided with.
+     * @param collision Information regarding the collision point and normal.
+     */
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
@@ -34,16 +48,14 @@ class Fruit extends GameObject {
         }
     }
 
-    public void eatFruit(){
-            renderer().setOpaqueness(0f);
-            new ScheduledTask(this, 30f, false, this::respawn);
-            isEaten = true;
+    private void eatFruit(){
+        renderer().setOpaqueness(0f);
+        new ScheduledTask(this, 30f, false, this::respawn);
+        isEaten = true;
     }
 
     private void respawn(){
         isEaten = false;
         renderer().setOpaqueness(1f);
     }
-
-
 }

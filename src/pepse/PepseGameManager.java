@@ -26,9 +26,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The main game manager for the Pepse game.
+ */
 public class PepseGameManager extends GameManager {
     private final static int DAY_LENGTH = 30;
     private final static int BUFFER = 300;
+    private final static int SEED = 10;
 
     private final Map<Integer, List<GameObject>> worldObjects = new HashMap<>();
 
@@ -38,6 +42,13 @@ public class PepseGameManager extends GameManager {
     private float lastLeftBound;
     private float lastRightBound;
 
+    /**
+     * Initializes the game settings and objects.
+     * @param imageReader      Used to read images from the disk.
+     * @param soundReader      Used to read sound files.
+     * @param inputListener    Listener for user input.
+     * @param windowController Controls the game window and its dimensions.
+     */
     @Override
     public void initializeGame(ImageReader imageReader,
                                SoundReader soundReader,
@@ -120,8 +131,8 @@ public class PepseGameManager extends GameManager {
     }
 
     private void createInitialWorld(Vector2 windowDimensions){
-        this.terrain  = new Terrain(windowDimensions, 1);
-        this.flora = new Flora(terrain::getGroundHeightAt);
+        this.terrain  = new Terrain(windowDimensions, SEED);
+        this.flora = new Flora(terrain::getGroundHeightAt, SEED);
 
         createWorld(-BUFFER, (int) windowDimensions.x() + BUFFER);
         this.lastLeftBound = -BUFFER;
@@ -138,16 +149,20 @@ public class PepseGameManager extends GameManager {
         gameObjects().addGameObject(energyUI, Layer.UI);
 
         GameObject avatar = new Avatar(startingPoint,
-                                        inputListener,
-                                        imageReader,
-                                        energyUI::updateEnergy,
-                                        this::infiniteWorld);
+                inputListener,
+                imageReader,
+                energyUI::updateEnergy,
+                this::infiniteWorld);
         gameObjects().addGameObject(avatar, Layer.DEFAULT);
 
         Vector2 offset = windowDimensions.mult(0.5f).subtract(startingPoint);
         setCamera(new Camera(avatar, offset, windowDimensions, windowDimensions));
     }
 
+    /**
+     * Entry point for the game application.
+     * @param args Command line arguments.
+     */
     public static void main(String[] args) {
         new PepseGameManager().run();
     }

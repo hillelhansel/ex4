@@ -12,9 +12,18 @@ import pepse.world.Block;
 import java.awt.*;
 import java.util.Random;
 
+/**
+ * Represents a single leaf block in a tree.
+ */
 class Leaf extends Block {
     private static final Color LEAF_COLOR = new Color(50, 200, 30);
 
+    /**
+     * Constructs a new Leaf block.
+     * Initializes the leaf with a color variation and schedules a task to start
+     * the wind animation after a random delay.
+     * @param topLeftCorner The top-left coordinate where the leaf will be placed.
+     */
     public Leaf(Vector2 topLeftCorner) {
         super(topLeftCorner, null);
         Color leafColor = ColorSupplier.approximateColor(LEAF_COLOR);
@@ -26,9 +35,9 @@ class Leaf extends Block {
         Random random = new Random();
         float waitTime = random.nextFloat(1.5f);
         ScheduledTask scheduledTask = new ScheduledTask(this,
-                                                            waitTime,
-                                                        false,
-                                                            this::windMovement);
+                waitTime,
+                false,
+                this::windMovement);
     }
 
     private void windMovement(){
@@ -51,5 +60,4 @@ class Leaf extends Block {
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
                 null);
     }
-
 }

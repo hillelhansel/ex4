@@ -10,25 +10,35 @@ import pepse.utils.GameObjectsTags;
 
 import java.awt.*;
 
+/**
+ * Represents the sun in the game world.
+ */
 public class Sun {
     private final static int SUN_RADIUS = 100;
 
+    /**
+     * Creates a GameObject representing the sun.
+     * The sun is rendered as a yellow oval and moves in a circular path across the sky.
+     * @param windowDimensions The dimensions of the game window, used to calculate the sun's path.
+     * @param cycleLength      The duration of a full day-night cycle in seconds.
+     * @return A GameObject representing the sun.
+     */
     public static GameObject create(Vector2 windowDimensions, float cycleLength){
         Renderable renderable = new OvalRenderable(Color.YELLOW);
 
         GameObject sun = new GameObject(Vector2.ZERO, Vector2.ONES.mult(SUN_RADIUS), renderable);
         Vector2 initialSunCenter = new Vector2(windowDimensions.x() * 0.5f,
-                                                windowDimensions.y() * (1f / 3));
+                windowDimensions.y() * (1f / 3));
         sun.setCenter(initialSunCenter);
 
         sun.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         sun.setTag(GameObjectsTags.SUN.toString());
 
         Vector2 cycleCenter = new Vector2(windowDimensions.x() * 0.5f,
-                                        windowDimensions.y() * (2f / 3f));
+                windowDimensions.y() * (2f / 3f));
         new Transition<>(sun,
                 (angle) ->
-                sun.setCenter(initialSunCenter.subtract(cycleCenter).rotated(angle).add(cycleCenter)),
+                        sun.setCenter(initialSunCenter.subtract(cycleCenter).rotated(angle).add(cycleCenter)),
                 0f,
                 360f,
                 Transition.LINEAR_INTERPOLATOR_FLOAT,
