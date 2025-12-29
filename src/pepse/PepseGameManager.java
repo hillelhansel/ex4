@@ -27,15 +27,14 @@ import java.util.Map;
 
 public class PepseGameManager extends GameManager {
     private final static int DAY_LENGTH = 30;
-    private final static int CHUNK_SIZE = 90;
+    public final static int CHUNK_SIZE = 90;
+    private final static int BUFFER = 120;
 
     private final Map<Integer, List<GameObject>> worldObjects = new HashMap<>();
 
-    private GameObject avatar;
     private Terrain terrain;
     private Flora flora;
 
-    private float lastAvatarPositon;
     private float lastLeftBound;
     private float lastRightBound;
 
@@ -68,41 +67,35 @@ public class PepseGameManager extends GameManager {
 
         Flora flora = new Flora(terrain::getGroundHeightAt);
         this.flora = flora;
-        createWorld(-120, windowDimensionX + 120);
-        this.lastLeftBound = -120;
-        this.lastRightBound = windowDimensionX + 120;
+
+        createWorld(-BUFFER, windowDimensionX + BUFFER);
+        this.lastLeftBound = -BUFFER;
+        this.lastRightBound = windowDimensionX + BUFFER;
 
         float startingPointX = windowDimensionX / 2f;
         Vector2 startingPoint = new Vector2(startingPointX, terrain.getGroundHeightAt(startingPointX));
-        this.lastAvatarPositon = startingPointX;
 
-        GameObject avatar = new Avatar(startingPoint, inputListener, imageReader, energyUI::updateEnergy);
+        GameObject avatar = new Avatar(startingPoint, inputListener, imageReader, energyUI::updateEnergy, this::infiniteWorld);
         gameObjects().addGameObject(avatar, Layer.DEFAULT);
-        this.avatar = avatar;
 
         Vector2 offset = windowController.getWindowDimensions().mult(0.5f).subtract(startingPoint);
         setCamera(new Camera(avatar, offset,
                 windowDimensions, windowDimensions));
     }
 
-    @Override
-    public void update(float deltaTime) {
-        super.update(deltaTime);
-        if (avatar.getCenter().x() > lastAvatarPositon + CHUNK_SIZE){
+    public void infiniteWorld(boolean right) {
+        if (right){
             lastLeftBound += CHUNK_SIZE;
             lastRightBound += CHUNK_SIZE;
-            createWorld((int) lastRightBound-CHUNK_SIZE, (int) lastRightBound);
-            removeWorld((int) lastLeftBound-CHUNK_SIZE, (int) lastLeftBound);
+            createWorld((int) lastRightBound - CHUNK_SIZE, (int) lastRightBound);
+            removeWorld((int) lastLeftBound - CHUNK_SIZE, (int) lastLeftBound);
+        }
 
-            lastAvatarPositon += CHUNK_SIZE;        }
-
-        if (avatar.getCenter().x() < lastAvatarPositon - CHUNK_SIZE){
+        else if (!right){
             lastLeftBound -= CHUNK_SIZE;
             lastRightBound -= CHUNK_SIZE;
             createWorld((int) lastLeftBound , (int) lastLeftBound+CHUNK_SIZE);
             removeWorld((int) lastRightBound , (int) lastRightBound+CHUNK_SIZE);
-
-            lastAvatarPositon -= CHUNK_SIZE;
         }
     }
 

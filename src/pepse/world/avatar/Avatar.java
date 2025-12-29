@@ -7,6 +7,7 @@ import danogl.gui.UserInputListener;
 
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
+import pepse.PepseGameManager;
 import pepse.utils.GameObjectsTags;
 import pepse.world.avatar.states.IDLEState;
 import pepse.world.avatar.states.JumpState;
@@ -20,6 +21,8 @@ public class Avatar extends GameObject {
     private static final Vector2 AVATAR_DIMENSIONS = new Vector2(60, 100);
     private static final float GRAVITY = 800;
 
+    private final Consumer<Boolean> onAvatarMove;
+
     private final Animation animation;
 
     private final Energy energy;
@@ -30,8 +33,9 @@ public class Avatar extends GameObject {
     private final AvatarState jumpState = new JumpState();
     private AvatarState currentState;
 
+    private float lastPositionX;
 
-    public Avatar(Vector2 topLeftCorner, UserInputListener input, ImageReader imageReader, Consumer<Float> onEnergyChange) {
+    public Avatar(Vector2 topLeftCorner, UserInputListener input, ImageReader imageReader, Consumer<Float> onEnergyChange, Consumer<Boolean> onAvatarMove) {
         super(topLeftCorner.subtract(AVATAR_DIMENSIONS.add(new Vector2(0, 40))),
                 AVATAR_DIMENSIONS,
                 imageReader.readImage("assets/idle_0.png", true));
@@ -40,10 +44,12 @@ public class Avatar extends GameObject {
         this.energy = new Energy(onEnergyChange);
         this.currentState = idleState;
         this.animation = new Animation(imageReader);
+        this.onAvatarMove = onAvatarMove;
 
         transform().setAccelerationY(GRAVITY);
         physics().preventIntersectionsFromDirection(Vector2.ZERO);
         setTag(GameObjectsTags.AVATAR.toString());
+        this.lastPositionX = getCenter().x();
     }
 
     @Override
@@ -62,6 +68,15 @@ public class Avatar extends GameObject {
         changeState(desiredState);
 
         currentState.update(input, this);
+        if(getCenter().x() > lastPositionX + PepseGameManager.CHUNK_SIZE) {
+            onAvatarMove.accept(true);
+            lastPositionX += PepseGameManager.CHUNK_SIZE;
+        }
+
+        if(getCenter().x() < lastPositionX - PepseGameManager.CHUNK_SIZE) {
+            onAvatarMove.accept(false);
+            lastPositionX += PepseGameManager.CHUNK_SIZE;
+        }
     }
 
     private AvatarState decideState() {
