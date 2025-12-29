@@ -9,7 +9,6 @@ import pepse.world.avatar.AvatarState;
 import java.awt.event.KeyEvent;
 
 public class RunState implements AvatarState {
-
     private static final float SPEED = 400;
 
     @Override

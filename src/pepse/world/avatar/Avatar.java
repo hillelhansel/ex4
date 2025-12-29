@@ -17,7 +17,6 @@ import java.awt.event.KeyEvent;
 import java.util.function.Consumer;
 
 public class Avatar extends GameObject {
-
     private static final Vector2 AVATAR_DIMENSIONS = new Vector2(60, 100);
     private static final float GRAVITY = 800;
 

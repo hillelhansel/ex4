@@ -1,11 +1,11 @@
 package pepse.utils;
 
 public class NoiseGenerator {
-    private double seed;
+    private final double seed;
     private long default_size;
     private int[] p;
     private int[] permutation;
-    private double startPoint;
+    private final double startPoint;
 
     /**
      * The constructor of the NoiseGenerator class.

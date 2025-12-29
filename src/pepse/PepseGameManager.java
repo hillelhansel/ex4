@@ -94,7 +94,7 @@ public class PepseGameManager extends GameManager {
 
     private void removeWorld(int minX, int maxX){
         for (int x = minX; x < maxX; x += Constants.BLOCK_SIZE) {
-            int key = (x/Constants.BLOCK_SIZE) * Constants.BLOCK_SIZE;
+            int key = (int) Math.floor((double) x / Constants.BLOCK_SIZE) * Constants.BLOCK_SIZE;
 
             if (worldObjects.containsKey(key)) {
                 for(GameObject gameObject : worldObjects.get(key)) {
@@ -108,11 +108,10 @@ public class PepseGameManager extends GameManager {
     }
 
     private void addToMap(GameObject gameObject){
-        int position = (int) gameObject.getCenter().x();
-        position = (position/Constants.BLOCK_SIZE) * Constants.BLOCK_SIZE;
-
-        worldObjects.putIfAbsent(position, new ArrayList<>());
-        worldObjects.get(position).add(gameObject);
+        int x = (int) gameObject.getCenter().x();
+        int key = (int) Math.floor((double) x / Constants.BLOCK_SIZE) * Constants.BLOCK_SIZE;
+        worldObjects.putIfAbsent(key, new ArrayList<>());
+        worldObjects.get(key).add(gameObject);
     }
 
     private void createBackground(Vector2 windowDimensions){

@@ -9,8 +9,6 @@ import pepse.world.avatar.AvatarState;
 import java.awt.event.KeyEvent;
 
 public class JumpState implements AvatarState {
-
-
     private static final float JUMP_VELOCITY = -650;
     private boolean spaceWasPressed;
 

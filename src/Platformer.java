@@ -60,7 +60,7 @@ class Avatar extends GameObject {
     private static final float GRAVITY = 600;
     private static final Color AVATAR_COLOR = Color.DARK_GRAY;
 
-    private UserInputListener inputListener;
+    private final UserInputListener inputListener;
 
     public Avatar(Vector2 pos, UserInputListener inputListener) {
         super(pos, Vector2.ONES.mult(50), new OvalRenderable(AVATAR_COLOR));
