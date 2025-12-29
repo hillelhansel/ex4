@@ -22,7 +22,7 @@ public class Energy {
 
     public void addEnergy(float energy) {
         if (currentEnergy < MAX_ENERGY) {
-            currentEnergy += energy;
+            currentEnergy = Math.min(currentEnergy + energy, MAX_ENERGY);
             onEnergyChange.accept(currentEnergy);
         }
     }

@@ -21,10 +21,16 @@ import pepse.world.trees.Flora;
 import pepse.world.trees.Tree;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PepseGameManager extends GameManager {
     private final static int DAY_LENGTH = 30;
+    private final static int CHUNK_SIZE = 90;
+
+    private final Map<Integer, List<GameObject>> worldObjects = new HashMap<>();
+
     private GameObject avatar;
     private Terrain terrain;
     private Flora flora;
@@ -64,7 +70,7 @@ public class PepseGameManager extends GameManager {
         this.flora = flora;
         createWorld(-120, windowDimensionX + 120);
         this.lastLeftBound = -120;
-        this.lastRightBound = 120;
+        this.lastRightBound = windowDimensionX + 120;
 
         float startingPointX = windowDimensionX / 2f;
         Vector2 startingPoint = new Vector2(startingPointX, terrain.getGroundHeightAt(startingPointX));
@@ -82,30 +88,68 @@ public class PepseGameManager extends GameManager {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if (avatar.getCenter().x() > lastAvatarPositon + 90){
-            createWorld((int) lastRightBound, (int) lastRightBound + 120);
-            lastLeftBound += 120;
-            lastRightBound += 120;
-        }
+        if (avatar.getCenter().x() > lastAvatarPositon + CHUNK_SIZE){
+            lastLeftBound += CHUNK_SIZE;
+            lastRightBound += CHUNK_SIZE;
+            createWorld((int) lastRightBound-CHUNK_SIZE, (int) lastRightBound);
+            removeWorld((int) lastLeftBound-CHUNK_SIZE, (int) lastLeftBound);
 
-        if (avatar.getCenter().x() < lastAvatarPositon - 90){
-            createWorld((int) lastLeftBound, (int) lastLeftBound + 120);
-            lastLeftBound -= 120;
-            lastRightBound -= 120;
+            lastAvatarPositon += CHUNK_SIZE;        }
+
+        if (avatar.getCenter().x() < lastAvatarPositon - CHUNK_SIZE){
+            lastLeftBound -= CHUNK_SIZE;
+            lastRightBound -= CHUNK_SIZE;
+            createWorld((int) lastLeftBound , (int) lastLeftBound+CHUNK_SIZE);
+            removeWorld((int) lastRightBound , (int) lastRightBound+CHUNK_SIZE);
+
+            lastAvatarPositon -= CHUNK_SIZE;
         }
-        lastAvatarPositon = avatar.getCenter().x();
     }
 
     private void createWorld(int minX, int maxX){
         List<Block> blocks = terrain.createInRange(minX, maxX);
-        blocks.forEach(block -> gameObjects().addGameObject(block, Layer.STATIC_OBJECTS));
+        blocks.forEach(block -> {
+            gameObjects().addGameObject(block, Layer.STATIC_OBJECTS);
+            addToMap(block);
+        });
 
         ArrayList<Tree> forrest = flora.createInRange(minX, maxX);
         forrest.forEach(tree -> {
-            tree.getTrunk().forEach(trunk -> gameObjects().addGameObject(trunk, Layer.STATIC_OBJECTS));
-            tree.getLeafs().forEach(leaf -> gameObjects().addGameObject(leaf, Layer.BACKGROUND));
-            tree.getFruits().forEach(fruit -> gameObjects().addGameObject(fruit, Layer.DEFAULT));
+            tree.getTrunk().forEach(trunk -> {
+                gameObjects().addGameObject(trunk, Layer.STATIC_OBJECTS);
+                addToMap(trunk);});
+            tree.getLeafs().forEach(leaf -> {
+                gameObjects().addGameObject(leaf, Layer.BACKGROUND);
+                addToMap(leaf);
+            });
+            tree.getFruits().forEach(fruit -> {
+                gameObjects().addGameObject(fruit, Layer.DEFAULT);
+                addToMap(fruit);
+            });
         });
+    }
+
+    private void removeWorld(int minX, int maxX){
+        for (int x = minX; x < maxX; x+=Block.SIZE) {
+            int key = (x/Block.SIZE) * Block.SIZE;
+
+            if (worldObjects.containsKey(key)) {
+                for(GameObject gameObject : worldObjects.get(key)) {
+                    gameObjects().removeGameObject(gameObject,  Layer.DEFAULT);
+                    gameObjects().removeGameObject(gameObject,  Layer.STATIC_OBJECTS);
+                    gameObjects().removeGameObject(gameObject,  Layer.BACKGROUND);
+                }
+                worldObjects.remove(key);
+            }
+        }
+    }
+
+    private void addToMap(GameObject gameObject){
+        int position = (int) gameObject.getCenter().x();
+        position = (position/Block.SIZE)*Block.SIZE;
+
+        worldObjects.putIfAbsent(position, new ArrayList<>());
+        worldObjects.get(position).add(gameObject);
     }
 
     public static void main(String[] args) {
