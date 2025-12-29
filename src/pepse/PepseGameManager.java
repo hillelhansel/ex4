@@ -44,43 +44,11 @@ public class PepseGameManager extends GameManager {
                                UserInputListener inputListener,
                                WindowController windowController) {
         super.initializeGame(imageReader, soundReader, inputListener, windowController);
+
         Vector2 windowDimensions = windowController.getWindowDimensions();
-        int windowDimensionX = (int) windowDimensions.x();
-
-        GameObject sky = Sky.create(windowDimensions);
-        gameObjects().addGameObject(sky, Layer.BACKGROUND);
-
-        GameObject night = Night.create(windowDimensions, DAY_LENGTH);
-        gameObjects().addGameObject(night, Layer.FOREGROUND);
-
-        EnergyUI energyUI = new EnergyUI();
-        gameObjects().addGameObject(energyUI, Layer.UI);
-
-        GameObject sun = Sun.create(windowDimensions, DAY_LENGTH);
-        gameObjects().addGameObject(sun, Layer.BACKGROUND);
-
-        GameObject sunHalo = SunHalo.create(sun);
-        gameObjects().addGameObject(sunHalo, Layer.BACKGROUND + 1);
-
-        Terrain terrain = new Terrain(windowDimensions, 1);
-        this.terrain = terrain;
-
-        Flora flora = new Flora(terrain::getGroundHeightAt);
-        this.flora = flora;
-
-        createWorld(-BUFFER, windowDimensionX + BUFFER);
-        this.lastLeftBound = -BUFFER;
-        this.lastRightBound = windowDimensionX + BUFFER;
-
-        float startingPointX = windowDimensionX / 2f;
-        Vector2 startingPoint = new Vector2(startingPointX, terrain.getGroundHeightAt(startingPointX));
-
-        GameObject avatar = new Avatar(startingPoint, inputListener, imageReader, energyUI::updateEnergy, this::infiniteWorld);
-        gameObjects().addGameObject(avatar, Layer.DEFAULT);
-
-        Vector2 offset = windowController.getWindowDimensions().mult(0.5f).subtract(startingPoint);
-        setCamera(new Camera(avatar, offset,
-                windowDimensions, windowDimensions));
+        createBackground(windowDimensions);
+        createInitialWorld(windowDimensions);
+        createAvatar(windowDimensions, inputListener, imageReader);
     }
 
     public void infiniteWorld(boolean right) {
@@ -94,8 +62,8 @@ public class PepseGameManager extends GameManager {
         else if (!right){
             lastLeftBound -= CHUNK_SIZE;
             lastRightBound -= CHUNK_SIZE;
-            createWorld((int) lastLeftBound , (int) lastLeftBound+CHUNK_SIZE);
-            removeWorld((int) lastRightBound , (int) lastRightBound+CHUNK_SIZE);
+            createWorld((int) lastLeftBound , (int) lastLeftBound + CHUNK_SIZE);
+            removeWorld((int) lastRightBound , (int) lastRightBound + CHUNK_SIZE);
         }
     }
 
@@ -111,10 +79,12 @@ public class PepseGameManager extends GameManager {
             tree.getTrunk().forEach(trunk -> {
                 gameObjects().addGameObject(trunk, Layer.STATIC_OBJECTS);
                 addToMap(trunk);});
+
             tree.getLeafs().forEach(leaf -> {
                 gameObjects().addGameObject(leaf, Layer.BACKGROUND);
                 addToMap(leaf);
             });
+
             tree.getFruits().forEach(fruit -> {
                 gameObjects().addGameObject(fruit, Layer.DEFAULT);
                 addToMap(fruit);
@@ -123,7 +93,7 @@ public class PepseGameManager extends GameManager {
     }
 
     private void removeWorld(int minX, int maxX){
-        for (int x = minX; x < maxX; x+=Block.SIZE) {
+        for (int x = minX; x < maxX; x += Block.SIZE) {
             int key = (x/Block.SIZE) * Block.SIZE;
 
             if (worldObjects.containsKey(key)) {
@@ -143,6 +113,46 @@ public class PepseGameManager extends GameManager {
 
         worldObjects.putIfAbsent(position, new ArrayList<>());
         worldObjects.get(position).add(gameObject);
+    }
+
+    private void createBackground(Vector2 windowDimensions){
+        GameObject sky = Sky.create(windowDimensions);
+        gameObjects().addGameObject(sky, Layer.BACKGROUND);
+
+        GameObject night = Night.create(windowDimensions, DAY_LENGTH);
+        gameObjects().addGameObject(night, Layer.FOREGROUND);
+
+        GameObject sun = Sun.create(windowDimensions, DAY_LENGTH);
+        gameObjects().addGameObject(sun, Layer.BACKGROUND);
+
+        GameObject sunHalo = SunHalo.create(sun);
+        gameObjects().addGameObject(sunHalo, Layer.BACKGROUND + 1);
+    }
+
+    private void createInitialWorld(Vector2 windowDimensions){
+        Terrain terrain = new Terrain(windowDimensions, 1);
+        this.terrain = terrain;
+
+        Flora flora = new Flora(terrain::getGroundHeightAt);
+        this.flora = flora;
+
+        createWorld(-BUFFER, (int) windowDimensions.x() + BUFFER);
+        this.lastLeftBound = -BUFFER;
+        this.lastRightBound = (int) windowDimensions.x() + BUFFER;
+    }
+
+    private void createAvatar(Vector2 windowDimensions, UserInputListener inputListener, ImageReader imageReader){
+        float startingPointX = windowDimensions.x() / 2f;
+        Vector2 startingPoint = new Vector2(startingPointX, terrain.getGroundHeightAt(startingPointX));
+
+        EnergyUI energyUI = new EnergyUI();
+        gameObjects().addGameObject(energyUI, Layer.UI);
+
+        GameObject avatar = new Avatar(startingPoint, inputListener, imageReader, energyUI::updateEnergy, this::infiniteWorld);
+        gameObjects().addGameObject(avatar, Layer.DEFAULT);
+
+        Vector2 offset = windowDimensions.mult(0.5f).subtract(startingPoint);
+        setCamera(new Camera(avatar, offset, windowDimensions, windowDimensions));
     }
 
     public static void main(String[] args) {

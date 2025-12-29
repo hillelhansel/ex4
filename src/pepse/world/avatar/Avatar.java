@@ -24,10 +24,9 @@ public class Avatar extends GameObject {
     private final Consumer<Boolean> onAvatarMove;
 
     private final Animation animation;
-
     private final Energy energy;
-
     private final UserInputListener input;
+
     private final AvatarState idleState = new IDLEState();
     private final AvatarState runState  = new RunState();
     private final AvatarState jumpState = new JumpState();
@@ -66,8 +65,8 @@ public class Avatar extends GameObject {
 
         AvatarState desiredState = decideState();
         changeState(desiredState);
-
         currentState.update(input, this);
+
         if(getCenter().x() > lastPositionX + PepseGameManager.CHUNK_SIZE) {
             onAvatarMove.accept(true);
             lastPositionX += PepseGameManager.CHUNK_SIZE;
@@ -75,7 +74,7 @@ public class Avatar extends GameObject {
 
         if(getCenter().x() < lastPositionX - PepseGameManager.CHUNK_SIZE) {
             onAvatarMove.accept(false);
-            lastPositionX += PepseGameManager.CHUNK_SIZE;
+            lastPositionX -= PepseGameManager.CHUNK_SIZE;
         }
     }
 
