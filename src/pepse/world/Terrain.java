@@ -38,7 +38,8 @@ public class Terrain {
             int normalizedMinY = (int) getGroundHeightAt(x);
 
             for(int i = 0; i < TERRAIN_DEPTH; i++){
-                RectangleRenderable renderable = new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR));
+                Color groundColor = ColorSupplier.approximateColor(BASE_GROUND_COLOR);
+                RectangleRenderable renderable = new RectangleRenderable(groundColor);
                 int y = normalizedMinY + (i * Constants.BLOCK_SIZE);
                 Vector2 topLeftCorner = new Vector2(x, y);
 

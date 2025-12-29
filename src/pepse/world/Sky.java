@@ -12,7 +12,8 @@ public class Sky {
     private static final Color BASIC_SKY_COLOR = Color.decode("#80C6E5");
 
     public static GameObject create(Vector2 windowDimensions){
-        GameObject sky = new GameObject(Vector2.ZERO, windowDimensions, new RectangleRenderable(BASIC_SKY_COLOR));
+        RectangleRenderable rectangleRenderable = new RectangleRenderable(BASIC_SKY_COLOR);
+        GameObject sky = new GameObject(Vector2.ZERO, windowDimensions, rectangleRenderable);
         sky.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         sky.setTag(GameObjectsTags.SKY.toString());
         return sky;

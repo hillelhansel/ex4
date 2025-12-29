@@ -14,7 +14,7 @@ import java.util.function.Function;
 public class Tree {
     private static final int FOLIAGE_SIZE = 8;
     private static final float LEAF_PROBABILITY = 0.5f;
-    private static final float FRUIT_PROBABILITY = 0.05f;
+    private static final float FRUIT_PROBABILITY = 0.2f;
 
     private final ArrayList<GameObject> trunk;
     private final ArrayList<GameObject> leafs;
@@ -22,12 +22,13 @@ public class Tree {
 
     private final Random random;
 
-    public Tree(float locationX, int groundHeight) {
-        this.random = new Random(Objects.hash(locationX, 5));
+    public Tree(float locationX, int groundHeight, Random random) {
+        this.random = random;
         int treeHeight = random.nextInt(4) + 4;
         this.trunk = createTrunk(locationX, groundHeight, treeHeight);
 
-        Vector2 foliageStartingPosition = new Vector2((float) (locationX + 3.5 * Constants.BLOCK_SIZE), groundHeight - treeHeight * Constants.BLOCK_SIZE);
+        Vector2 foliageStartingPosition = new Vector2((float) (locationX + 3.5 * Constants.BLOCK_SIZE),
+                groundHeight - treeHeight * Constants.BLOCK_SIZE);
         this.leafs = createFoliageObjects(foliageStartingPosition, LEAF_PROBABILITY, Leaf::new);
         this.fruits = createFoliageObjects(foliageStartingPosition, FRUIT_PROBABILITY, Fruit::new);
     }
@@ -47,7 +48,8 @@ public class Tree {
         for (int i = 0; i < FOLIAGE_SIZE; i++) {
             for (int j = 0; j < FOLIAGE_SIZE; j++) {
                 if (random.nextFloat() < probability) {
-                    Vector2 topLeft = startPos.subtract(new Vector2(i * Constants.BLOCK_SIZE, j * Constants.BLOCK_SIZE));
+                    Vector2 topLeft = startPos.subtract(new Vector2(i * Constants.BLOCK_SIZE,
+                                                                    j * Constants.BLOCK_SIZE));
 
                     GameObject obj = objectFactory.apply(topLeft);
                     objects.add(obj);

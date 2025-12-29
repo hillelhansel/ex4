@@ -33,7 +33,11 @@ public class Avatar extends GameObject {
 
     private float lastPositionX;
 
-    public Avatar(Vector2 topLeftCorner, UserInputListener input, ImageReader imageReader, Consumer<Float> onEnergyChange, Consumer<Boolean> onAvatarMove) {
+    public Avatar(Vector2 topLeftCorner,
+                  UserInputListener input,
+                  ImageReader imageReader,
+                  Consumer<Float> onEnergyChange,
+                  Consumer<Boolean> onAvatarMove) {
         super(topLeftCorner.subtract(AVATAR_DIMENSIONS.add(new Vector2(0, 40))),
                 AVATAR_DIMENSIONS,
                 imageReader.readImage("assets/idle_0.png", true));
@@ -78,16 +82,20 @@ public class Avatar extends GameObject {
     }
 
     private AvatarState decideState() {
-        boolean hasHorizontalInput = hasHorizontalInput();
         boolean onGround = isOnGround();
+        boolean spaceKeyPressed = input.isKeyPressed(KeyEvent.VK_SPACE);
+        boolean rightKeyPressed = input.isKeyPressed(KeyEvent.VK_RIGHT);
+        boolean leftKeyPressed = input.isKeyPressed(KeyEvent.VK_LEFT);
+
+        boolean hasHorizontalInput = rightKeyPressed || leftKeyPressed;
 
         if (!onGround) {
-            if (input.isKeyPressed(KeyEvent.VK_SPACE)
+            if (spaceKeyPressed
                     && hasEnergy(Constants.DOUBLE_JUMP_ENERGY_COST)) {
                 return jumpState;
             }
 
-            if(input.isKeyPressed(KeyEvent.VK_LEFT) && input.isKeyPressed(KeyEvent.VK_RIGHT)){
+            if(leftKeyPressed && rightKeyPressed){
                 return jumpState;
             }
 
@@ -98,11 +106,11 @@ public class Avatar extends GameObject {
             return jumpState;
         }
 
-        if (input.isKeyPressed(KeyEvent.VK_SPACE) && hasEnergy(Constants.ONE_JUMP_ENERGY_COST)) {
+        if (spaceKeyPressed && hasEnergy(Constants.ONE_JUMP_ENERGY_COST)) {
             return jumpState;
         }
 
-        if(input.isKeyPressed(KeyEvent.VK_LEFT) && input.isKeyPressed(KeyEvent.VK_RIGHT)){
+        if(leftKeyPressed && rightKeyPressed){
             return idleState;
         }
 
@@ -127,11 +135,6 @@ public class Avatar extends GameObject {
 
     public boolean isFalling() {
         return getVelocity().y() > 0;
-    }
-
-    private boolean hasHorizontalInput() {
-        return input.isKeyPressed(KeyEvent.VK_LEFT) ||
-                input.isKeyPressed(KeyEvent.VK_RIGHT);
     }
 
     public boolean isOnGround() {

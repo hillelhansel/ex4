@@ -7,6 +7,7 @@ import danogl.gui.rendering.Renderable;
 import java.util.HashMap;
 
 public class Animation {
+    private static final float ANIMATION_DELAY = 0.5f;
     private final HashMap<AnimationType, Renderable> animations;
 
     Animation(ImageReader imageReader) {
@@ -18,9 +19,18 @@ public class Animation {
         String[] jumpAssetsPath= {"assets/jump_0.png", "assets/jump_1.png",
                 "assets/jump_2.png", "assets/jump_3.png"};
 
-        AnimationRenderable idleAnimation = new AnimationRenderable(idleAssetsPath, imageReader, true, 0.5f);
-        AnimationRenderable runAnimation = new AnimationRenderable(runAssetsPath, imageReader, true, 0.5f);
-        AnimationRenderable jumpAnimation = new AnimationRenderable(jumpAssetsPath, imageReader, true, 0.5f);
+        AnimationRenderable idleAnimation = new AnimationRenderable(idleAssetsPath,
+                                                                    imageReader,
+                                                    true,
+                                                                    ANIMATION_DELAY);
+        AnimationRenderable runAnimation = new AnimationRenderable(runAssetsPath,
+                                                                    imageReader,
+                                                    true,
+                                                                    ANIMATION_DELAY);
+        AnimationRenderable jumpAnimation = new AnimationRenderable(jumpAssetsPath,
+                                                                    imageReader,
+                                                    true,
+                                                                    ANIMATION_DELAY);
 
         animations.put(AnimationType.RUN, runAnimation);
         animations.put(AnimationType.IDLE, idleAnimation);

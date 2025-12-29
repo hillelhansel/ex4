@@ -22,10 +22,10 @@ public class Flora {
         int normalizedMaxX = normalize(maxX);
 
         for (int locationX = normalizedMinX; locationX <= normalizedMaxX; locationX += Constants.BLOCK_SIZE) {
-            Random random = new Random(Objects.hash(locationX, 5));
+            Random random = new Random(Objects.hash(60, 20));
             if(random.nextFloat() < 0.1f){
                 int groundHeight = (int) Math.floor(groundHeightAt.apply((float) locationX));
-                trees.add(new Tree(locationX, groundHeight));
+                trees.add(new Tree(locationX, groundHeight, random));
                 locationX += 3 * Constants.BLOCK_SIZE;
             }
         }

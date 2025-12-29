@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class PepseGameManager extends GameManager {
     private final static int DAY_LENGTH = 30;
-    private final static int BUFFER = 120;
+    private final static int BUFFER = 300;
 
     private final Map<Integer, List<GameObject>> worldObjects = new HashMap<>();
 
@@ -128,14 +128,20 @@ public class PepseGameManager extends GameManager {
         this.lastRightBound = (int) windowDimensions.x() + BUFFER;
     }
 
-    private void createAvatar(Vector2 windowDimensions, UserInputListener inputListener, ImageReader imageReader){
+    private void createAvatar(Vector2 windowDimensions,
+                              UserInputListener inputListener,
+                              ImageReader imageReader){
         float startingPointX = windowDimensions.x() / 2f;
         Vector2 startingPoint = new Vector2(startingPointX, terrain.getGroundHeightAt(startingPointX));
 
         EnergyUI energyUI = new EnergyUI();
         gameObjects().addGameObject(energyUI, Layer.UI);
 
-        GameObject avatar = new Avatar(startingPoint, inputListener, imageReader, energyUI::updateEnergy, this::infiniteWorld);
+        GameObject avatar = new Avatar(startingPoint,
+                                        inputListener,
+                                        imageReader,
+                                        energyUI::updateEnergy,
+                                        this::infiniteWorld);
         gameObjects().addGameObject(avatar, Layer.DEFAULT);
 
         Vector2 offset = windowDimensions.mult(0.5f).subtract(startingPoint);

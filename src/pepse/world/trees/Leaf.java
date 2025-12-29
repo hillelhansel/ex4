@@ -17,8 +17,9 @@ class Leaf extends Block {
 
     public Leaf(Vector2 topLeftCorner) {
         super(topLeftCorner, null);
+        Color leafColor = ColorSupplier.approximateColor(LEAF_COLOR);
 
-        RectangleRenderable leafRenderable = new RectangleRenderable(ColorSupplier.approximateColor(LEAF_COLOR));
+        RectangleRenderable leafRenderable = new RectangleRenderable(leafColor);
         renderer().setRenderable(leafRenderable);
         setTag(GameObjectsTags.LEAF.toString());
 

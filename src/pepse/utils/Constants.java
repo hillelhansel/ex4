@@ -9,5 +9,5 @@ public class Constants {
 
     public static final int BLOCK_SIZE = 30;
 
-    public final static int CHUNK_SIZE = 90;
+    public final static int CHUNK_SIZE = BLOCK_SIZE * 3;
 }
