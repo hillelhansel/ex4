@@ -76,18 +76,9 @@ public class PepseGameManager extends GameManager {
 
         ArrayList<Tree> forrest = flora.createInRange(minX, maxX);
         forrest.forEach(tree -> {
-            tree.getTrunk().forEach(trunk -> {
-                gameObjects().addGameObject(trunk, Layer.STATIC_OBJECTS);
-                addToMap(trunk);});
-
-            tree.getLeafs().forEach(leaf -> {
-                gameObjects().addGameObject(leaf, Layer.BACKGROUND);
-                addToMap(leaf);
-            });
-
-            tree.getFruits().forEach(fruit -> {
-                gameObjects().addGameObject(fruit, Layer.DEFAULT);
-                addToMap(fruit);
+            tree.create((obj, layer) -> {
+                gameObjects().addGameObject(obj, layer);
+                addToMap(obj);
             });
         });
     }
@@ -98,9 +89,9 @@ public class PepseGameManager extends GameManager {
 
             if (worldObjects.containsKey(key)) {
                 for(GameObject gameObject : worldObjects.get(key)) {
-                    gameObjects().removeGameObject(gameObject,  Layer.DEFAULT);
-                    gameObjects().removeGameObject(gameObject,  Layer.STATIC_OBJECTS);
-                    gameObjects().removeGameObject(gameObject,  Layer.BACKGROUND);
+                    gameObjects().removeGameObject(gameObject, Layer.DEFAULT);
+                    gameObjects().removeGameObject(gameObject, Layer.STATIC_OBJECTS);
+                    gameObjects().removeGameObject(gameObject, Layer.BACKGROUND);
                 }
                 worldObjects.remove(key);
             }

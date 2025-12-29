@@ -1,12 +1,14 @@
 package pepse.world.trees;
 
 import danogl.GameObject;
+import danogl.collisions.Layer;
 import danogl.util.Vector2;
 import pepse.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
+import java.util.function.BiConsumer;
 
 public class Tree {
     private static final int FOLIAGE_SIZE = 8;
@@ -25,18 +27,12 @@ public class Tree {
         Vector2 FoliageStartingPosition = new Vector2((float) (locationX + 3.5 * Constants.BLOCK_SIZE), groundHeight - treeHeight * Constants.BLOCK_SIZE);
         this.leafs = createLeafs(FoliageStartingPosition);
         this.fruits = createFruits(FoliageStartingPosition);
-
     }
 
-    public ArrayList<GameObject> getTrunk() {
-        return trunk;
-    }
-
-    public ArrayList<GameObject> getLeafs() {
-        return leafs;
-    }
-    public ArrayList<GameObject> getFruits() {
-        return fruits;
+    public void create(BiConsumer<GameObject, Integer> addGameObjectFunc) {
+        trunk.forEach(trunkBlock -> addGameObjectFunc.accept(trunkBlock, Layer.STATIC_OBJECTS));
+        leafs.forEach(leaf -> addGameObjectFunc.accept(leaf, Layer.BACKGROUND));
+        fruits.forEach(fruit -> addGameObjectFunc.accept(fruit, Layer.DEFAULT));
     }
 
     private ArrayList<GameObject> createLeafs(Vector2 FoliageStartingPosition) {

@@ -98,7 +98,7 @@ public class Avatar extends GameObject {
             return jumpState;
         }
 
-        if (input.isKeyPressed(KeyEvent.VK_SPACE) && hasEnergy(Constants.DOUBLE_JUMP_ENERGY_COST)) {
+        if (input.isKeyPressed(KeyEvent.VK_SPACE) && hasEnergy(Constants.ONE_JUMP_ENERGY_COST)) {
             return jumpState;
         }
 
@@ -139,7 +139,7 @@ public class Avatar extends GameObject {
     }
 
     public boolean hasEnergy(float amount) {
-        return energy.getEnergy() >= amount;
+        return energy.hasEnoughEnergy(amount);
     }
 
     public void consumeEnergy(float amount) {

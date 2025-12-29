@@ -27,7 +27,7 @@ public class Energy {
         }
     }
 
-    public float getEnergy() {
-        return currentEnergy;
+    public boolean hasEnoughEnergy(float energy) {
+        return energy <= currentEnergy;
     }
 }
