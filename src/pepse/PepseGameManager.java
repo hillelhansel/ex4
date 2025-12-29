@@ -26,7 +26,6 @@ import java.util.List;
 public class PepseGameManager extends GameManager {
     private final static int DAY_LENGTH = 30;
 
-
     @Override
     public void initializeGame(ImageReader imageReader,
                                SoundReader soundReader,
@@ -53,25 +52,16 @@ public class PepseGameManager extends GameManager {
 
         Terrain terrain = new Terrain(windowDimensions, 1);
         List<Block> blocks = terrain.createInRange(-100, windowDimensionX + 100);
-        for  (Block block : blocks) {
-            gameObjects().addGameObject(block, Layer.STATIC_OBJECTS);
-        }
+        blocks.forEach(block -> gameObjects().addGameObject(block, Layer.STATIC_OBJECTS));
 
         Flora flora = new Flora(terrain::getGroundHeightAt);
         ArrayList<Tree> forrest = flora.createInRange(-100, windowDimensionX + 100);
-        for (Tree tree : forrest) {
-            for (GameObject object : tree.getTrunk()){
-                gameObjects().addGameObject(object, Layer.STATIC_OBJECTS);
-            }
+        forrest.forEach(tree -> {
+            tree.getTrunk().forEach(trunk -> gameObjects().addGameObject(trunk, Layer.STATIC_OBJECTS));
+            tree.getLeafs().forEach(leaf -> gameObjects().addGameObject(leaf, Layer.BACKGROUND));
+            tree.getFruits().forEach(fruit -> gameObjects().addGameObject(fruit, Layer.DEFAULT));
+        });
 
-            for (GameObject object : tree.getLeafs()){
-                gameObjects().addGameObject(object, Layer.BACKGROUND);
-            }
-
-            for (GameObject object : tree.getFruits()){
-                gameObjects().addGameObject(object, Layer.DEFAULT);
-            }
-        }
         float startingPointX = windowDimensionX / 2f;
         Vector2 startingPoint = new Vector2(startingPointX, terrain.getGroundHeightAt(startingPointX));
 

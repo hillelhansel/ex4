@@ -7,7 +7,7 @@ import danogl.gui.rendering.Renderable;
 import java.util.HashMap;
 
 public class Animation {
-    private final HashMap<String, Renderable> animations;
+    private final HashMap<AnimationType, Renderable> animations;
 
     Animation(ImageReader imageReader) {
         this.animations = new HashMap<>();
@@ -22,13 +22,13 @@ public class Animation {
         AnimationRenderable runAnimation = new AnimationRenderable(runAssetsPath, imageReader, true, 0.5f);
         AnimationRenderable jumpAnimation = new AnimationRenderable(jumpAssetsPath, imageReader, true, 0.5f);
 
-        animations.put(AnimationType.RUN.toString(), runAnimation);
-        animations.put(AnimationType.IDLE.toString(), idleAnimation);
-        animations.put(AnimationType.JUMP.toString(), jumpAnimation);
+        animations.put(AnimationType.RUN, runAnimation);
+        animations.put(AnimationType.IDLE, idleAnimation);
+        animations.put(AnimationType.JUMP, jumpAnimation);
     }
 
-    public Renderable getAnimation(String name) {
-        return animations.get(name);
+    public Renderable getAnimation(AnimationType animationType) {
+        return animations.get(animationType);
     }
 
     public enum AnimationType {

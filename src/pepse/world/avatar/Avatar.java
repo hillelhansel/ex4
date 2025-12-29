@@ -8,10 +8,10 @@ import danogl.gui.UserInputListener;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 import pepse.utils.GameObjectsTags;
-import pepse.world.trees.Fruit;
+import pepse.world.avatar.states.IDLEState;
+import pepse.world.avatar.states.JumpState;
+import pepse.world.avatar.states.RunState;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.function.Consumer;
 
@@ -74,6 +74,10 @@ public class Avatar extends GameObject {
                 return jumpState;
             }
 
+            if(input.isKeyPressed(KeyEvent.VK_LEFT) && input.isKeyPressed(KeyEvent.VK_RIGHT)){
+                return jumpState;
+            }
+
             if (hasHorizontalInput) {
                 return runState;
             }
@@ -85,6 +89,10 @@ public class Avatar extends GameObject {
             return jumpState;
         }
 
+        if(input.isKeyPressed(KeyEvent.VK_LEFT) && input.isKeyPressed(KeyEvent.VK_RIGHT)){
+            return idleState;
+        }
+
         if (hasHorizontalInput && hasEnergy(RunState.RUN_ENERGY_COST)) {
             return runState;
         }
@@ -92,7 +100,7 @@ public class Avatar extends GameObject {
         return idleState;
     }
 
-    public Renderable getAnimation(String animationName) {
+    public Renderable getAnimation(Animation.AnimationType animationName) {
         return animation.getAnimation(animationName);
     }
 

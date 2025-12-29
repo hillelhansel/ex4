@@ -27,21 +27,17 @@ public class Fruit extends GameObject {
 
         if (other.getTag().equals(GameObjectsTags.AVATAR.toString())) {
             Avatar avatar = (Avatar) other;
-
-            avatar.restoreEnergy(10f);
-
-            this.eat();
+            if(!isEaten) {
+                eat();
+                avatar.restoreEnergy(10f);
+            }
         }
     }
 
-    public boolean eat(){
-        if(!isEaten){
+    public void eat(){
             renderer().setOpaqueness(0f);
             new ScheduledTask(this, 30f, false, this::respawn);
             isEaten = true;
-            return true;
-        }
-        return false;
     }
 
     private void respawn(){

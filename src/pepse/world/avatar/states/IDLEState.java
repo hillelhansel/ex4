@@ -1,12 +1,15 @@
-package pepse.world.avatar;
+package pepse.world.avatar.states;
 
 import danogl.gui.UserInputListener;
+import pepse.world.avatar.Animation;
+import pepse.world.avatar.Avatar;
+import pepse.world.avatar.AvatarState;
 
 public class IDLEState implements AvatarState {
 
     @Override
     public void onEnter(Avatar avatar) {
-        avatar.renderer().setRenderable(avatar.getAnimation(Animation.AnimationType.IDLE.toString()));
+        avatar.renderer().setRenderable(avatar.getAnimation(Animation.AnimationType.IDLE));
     }
 
     @Override

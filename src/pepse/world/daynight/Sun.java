@@ -24,7 +24,7 @@ public class Sun {
         sun.setTag(GameObjectsTags.SUN.toString());
 
         Vector2 cycleCenter = new Vector2(windowDimensions.x() * 0.5f, windowDimensions.y() * (2f / 3f));
-        new Transition<Float>(sun,
+        new Transition<>(sun,
                 (angle) -> sun.setCenter(initialSunCenter.subtract(cycleCenter).rotated(angle).add(cycleCenter)),
                 0f,
                 360f,

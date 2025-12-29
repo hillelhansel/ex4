@@ -1,6 +1,9 @@
-package pepse.world.avatar;
+package pepse.world.avatar.states;
 
 import danogl.gui.UserInputListener;
+import pepse.world.avatar.Animation;
+import pepse.world.avatar.Avatar;
+import pepse.world.avatar.AvatarState;
 
 import java.awt.event.KeyEvent;
 
@@ -11,7 +14,7 @@ public class RunState implements AvatarState {
 
     @Override
     public void onEnter(Avatar avatar) {
-        avatar.renderer().setRenderable(avatar.getAnimation(Animation.AnimationType.RUN.toString()));
+        avatar.renderer().setRenderable(avatar.getAnimation(Animation.AnimationType.RUN));
     }
 
     @Override

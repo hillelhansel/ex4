@@ -1,6 +1,9 @@
-package pepse.world.avatar;
+package pepse.world.avatar.states;
 
 import danogl.gui.UserInputListener;
+import pepse.world.avatar.Animation;
+import pepse.world.avatar.Avatar;
+import pepse.world.avatar.AvatarState;
 
 import java.awt.event.KeyEvent;
 
@@ -14,7 +17,7 @@ public class JumpState implements AvatarState {
     @Override
     public void onEnter(Avatar avatar) {
         avatar.transform().setVelocityX(0);
-        avatar.renderer().setRenderable(avatar.getAnimation(Animation.AnimationType.JUMP.toString()));
+        avatar.renderer().setRenderable(avatar.getAnimation(Animation.AnimationType.JUMP));
         spaceWasPressed = false;
     }
 

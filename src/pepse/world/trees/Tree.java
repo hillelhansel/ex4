@@ -44,7 +44,7 @@ public class Tree {
 
         for (int i =  0; i < FOLIAGE_SIZE; i++) {
             for (int j =  0; j < FOLIAGE_SIZE; j++) {
-                if(random.nextFloat() < 0.7f){
+                if(random.nextFloat() < 0.5f){
                     Vector2 topLeft = FoliageStartingPosition.subtract(new Vector2(i * Block.SIZE, j * Block.SIZE));
 
                     GameObject leaf = new Leaf(topLeft);
