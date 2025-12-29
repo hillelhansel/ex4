@@ -51,7 +51,7 @@ public class PepseGameManager extends GameManager {
         createAvatar(windowDimensions, inputListener, imageReader);
     }
 
-    public void infiniteWorld(boolean right) {
+    private void infiniteWorld(boolean right) {
         if (right){
             lastLeftBound += Constants.CHUNK_SIZE;
             lastRightBound += Constants.CHUNK_SIZE;
@@ -59,7 +59,7 @@ public class PepseGameManager extends GameManager {
             removeWorld((int) lastLeftBound - Constants.CHUNK_SIZE, (int) lastLeftBound);
         }
 
-        else if (!right){
+        else {
             lastLeftBound -= Constants.CHUNK_SIZE;
             lastRightBound -= Constants.CHUNK_SIZE;
             createWorld((int) lastLeftBound , (int) lastLeftBound + Constants.CHUNK_SIZE);

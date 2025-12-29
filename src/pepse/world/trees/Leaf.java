@@ -12,7 +12,7 @@ import pepse.world.Block;
 import java.awt.*;
 import java.util.Random;
 
-public class Leaf extends Block {
+class Leaf extends Block {
     private static final Color LEAF_COLOR = new Color(50, 200, 30);
 
     public Leaf(Vector2 topLeftCorner) {

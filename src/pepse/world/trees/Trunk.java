@@ -7,7 +7,7 @@ import pepse.world.Block;
 
 import java.awt.*;
 
-public class Trunk extends Block {
+class Trunk extends Block {
     private static final Color TRUNK_COLOR = new Color(100, 50, 20);
     private static final RectangleRenderable TRUNK_RENDERABLE = new RectangleRenderable(TRUNK_COLOR);
 
