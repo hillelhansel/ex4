@@ -3,6 +3,7 @@ package pepse.world;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.utils.ColorSupplier;
+import pepse.utils.Constants;
 import pepse.utils.GameObjectsTags;
 import pepse.utils.NoiseGenerator;
 
@@ -22,9 +23,9 @@ public class Terrain {
     }
 
     public float getGroundHeightAt(float x) {
-        float noise = (float) noiseGenerator.noise(x, Block.SIZE * 10);
+        float noise = (float) noiseGenerator.noise(x, Constants.CHUNK_SIZE * 10);
         float groundHeight = groundHeightAtX0 + noise;
-        return (float) Math.floor(groundHeight / Block.SIZE) * Block.SIZE;
+        return (float) Math.floor(groundHeight / Constants.CHUNK_SIZE) * Constants.CHUNK_SIZE;
     }
 
     public List<Block> createInRange(int minX, int maxX){
@@ -33,12 +34,12 @@ public class Terrain {
         int normalizedMinX = normalize(minX);
         int normalizedMaxX = normalize(maxX);
 
-        for (int x = normalizedMinX; x <= normalizedMaxX; x += Block.SIZE) {
+        for (int x = normalizedMinX; x <= normalizedMaxX; x += Constants.CHUNK_SIZE) {
             int normalizedMinY = (int) getGroundHeightAt(x);
 
             for(int i = 0; i < TERRAIN_DEPTH; i++){
                 RectangleRenderable renderable = new RectangleRenderable(ColorSupplier.approximateColor(BASE_GROUND_COLOR));
-                int y = normalizedMinY + (i * Block.SIZE);
+                int y = normalizedMinY + (i * Constants.CHUNK_SIZE);
                 Vector2 topLeftCorner = new Vector2(x, y);
 
                 Block block = new Block(topLeftCorner, renderable);
@@ -50,6 +51,6 @@ public class Terrain {
     }
 
     private int normalize(int x) {
-        return (int) Math.floor((double) x / Block.SIZE) * Block.SIZE;
+        return (int) Math.floor((double) x / Constants.CHUNK_SIZE) * Constants.CHUNK_SIZE;
     }
 }

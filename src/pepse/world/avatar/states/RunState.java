@@ -1,6 +1,7 @@
 package pepse.world.avatar.states;
 
 import danogl.gui.UserInputListener;
+import pepse.utils.Constants;
 import pepse.world.avatar.Animation;
 import pepse.world.avatar.Avatar;
 import pepse.world.avatar.AvatarState;
@@ -10,7 +11,6 @@ import java.awt.event.KeyEvent;
 public class RunState implements AvatarState {
 
     private static final float SPEED = 400;
-    public static final float RUN_ENERGY_COST = 2f;
 
     @Override
     public void onEnter(Avatar avatar) {
@@ -34,7 +34,7 @@ public class RunState implements AvatarState {
         avatar.transform().setVelocityX(xVel);
 
         if (avatar.isOnGround() && xVel != 0) {
-            avatar.consumeEnergy(RUN_ENERGY_COST);
+            avatar.consumeEnergy(Constants.RUN_ENERGY_COST);
         }
     }
 }

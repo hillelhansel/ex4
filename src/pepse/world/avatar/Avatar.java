@@ -7,7 +7,7 @@ import danogl.gui.UserInputListener;
 
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
-import pepse.PepseGameManager;
+import pepse.utils.Constants;
 import pepse.utils.GameObjectsTags;
 import pepse.world.avatar.states.IDLEState;
 import pepse.world.avatar.states.JumpState;
@@ -67,14 +67,14 @@ public class Avatar extends GameObject {
         changeState(desiredState);
         currentState.update(input, this);
 
-        if(getCenter().x() > lastPositionX + PepseGameManager.CHUNK_SIZE) {
+        if(getCenter().x() > lastPositionX + Constants.CHUNK_SIZE) {
             onAvatarMove.accept(true);
-            lastPositionX += PepseGameManager.CHUNK_SIZE;
+            lastPositionX += Constants.CHUNK_SIZE;
         }
 
-        if(getCenter().x() < lastPositionX - PepseGameManager.CHUNK_SIZE) {
+        if(getCenter().x() < lastPositionX - Constants.CHUNK_SIZE) {
             onAvatarMove.accept(false);
-            lastPositionX -= PepseGameManager.CHUNK_SIZE;
+            lastPositionX -= Constants.CHUNK_SIZE;
         }
     }
 
@@ -84,7 +84,7 @@ public class Avatar extends GameObject {
 
         if (!onGround) {
             if (input.isKeyPressed(KeyEvent.VK_SPACE)
-                    && hasEnergy(JumpState.DOUBLE_JUMP_ENERGY_COST)) {
+                    && hasEnergy(Constants.DOUBLE_JUMP_ENERGY_COST)) {
                 return jumpState;
             }
 
@@ -99,7 +99,7 @@ public class Avatar extends GameObject {
             return jumpState;
         }
 
-        if (input.isKeyPressed(KeyEvent.VK_SPACE) && hasEnergy(JumpState.ONE_JUMP_ENERGY_COST)) {
+        if (input.isKeyPressed(KeyEvent.VK_SPACE) && hasEnergy(Constants.DOUBLE_JUMP_ENERGY_COST)) {
             return jumpState;
         }
 
@@ -107,7 +107,7 @@ public class Avatar extends GameObject {
             return idleState;
         }
 
-        if (hasHorizontalInput && hasEnergy(RunState.RUN_ENERGY_COST)) {
+        if (hasHorizontalInput && hasEnergy(Constants.RUN_ENERGY_COST)) {
             return runState;
         }
 

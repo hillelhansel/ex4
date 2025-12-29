@@ -1,6 +1,7 @@
 package pepse.world.avatar.states;
 
 import danogl.gui.UserInputListener;
+import pepse.utils.Constants;
 import pepse.world.avatar.Animation;
 import pepse.world.avatar.Avatar;
 import pepse.world.avatar.AvatarState;
@@ -9,8 +10,7 @@ import java.awt.event.KeyEvent;
 
 public class JumpState implements AvatarState {
 
-    public static final float ONE_JUMP_ENERGY_COST = 20f;
-    public static final float DOUBLE_JUMP_ENERGY_COST = 50f;
+
     private static final float JUMP_VELOCITY = -650;
     private boolean spaceWasPressed;
 
@@ -27,13 +27,13 @@ public class JumpState implements AvatarState {
 
         if (spacePressed && !spaceWasPressed) {
 
-            if (avatar.isOnGround() && avatar.hasEnergy(ONE_JUMP_ENERGY_COST)) {
-                avatar.consumeEnergy(ONE_JUMP_ENERGY_COST);
+            if (avatar.isOnGround() && avatar.hasEnergy(Constants.ONE_JUMP_ENERGY_COST)) {
+                avatar.consumeEnergy(Constants.ONE_JUMP_ENERGY_COST);
                 avatar.transform().setVelocityY(JUMP_VELOCITY);
             }
 
-            else if (avatar.hasEnergy(DOUBLE_JUMP_ENERGY_COST) && avatar.isFalling()) {
-                avatar.consumeEnergy(DOUBLE_JUMP_ENERGY_COST);
+            else if (avatar.hasEnergy(Constants.DOUBLE_JUMP_ENERGY_COST) && avatar.isFalling()) {
+                avatar.consumeEnergy(Constants.DOUBLE_JUMP_ENERGY_COST);
                 avatar.transform().setVelocityY(JUMP_VELOCITY);
             }
         }

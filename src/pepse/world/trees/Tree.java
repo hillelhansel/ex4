@@ -2,7 +2,7 @@ package pepse.world.trees;
 
 import danogl.GameObject;
 import danogl.util.Vector2;
-import pepse.world.Block;
+import pepse.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -22,7 +22,7 @@ public class Tree {
         int treeHeight = random.nextInt(4) + 4;
         this.trunk = createTrunk(locationX, groundHeight, treeHeight);
 
-        Vector2 FoliageStartingPosition = new Vector2((float) (locationX + 3.5 * Block.SIZE), groundHeight - treeHeight * Block.SIZE);
+        Vector2 FoliageStartingPosition = new Vector2((float) (locationX + 3.5 * Constants.BLOCK_SIZE), groundHeight - treeHeight * Constants.BLOCK_SIZE);
         this.leafs = createLeafs(FoliageStartingPosition);
         this.fruits = createFruits(FoliageStartingPosition);
 
@@ -45,7 +45,7 @@ public class Tree {
         for (int i =  0; i < FOLIAGE_SIZE; i++) {
             for (int j =  0; j < FOLIAGE_SIZE; j++) {
                 if(random.nextFloat() < 0.5f){
-                    Vector2 topLeft = FoliageStartingPosition.subtract(new Vector2(i * Block.SIZE, j * Block.SIZE));
+                    Vector2 topLeft = FoliageStartingPosition.subtract(new Vector2(i * Constants.BLOCK_SIZE, j * Constants.BLOCK_SIZE));
 
                     GameObject leaf = new Leaf(topLeft);
                     leafs.add(leaf);
@@ -61,7 +61,7 @@ public class Tree {
         for (int i =  0; i < FOLIAGE_SIZE; i++) {
             for (int j =  0; j < FOLIAGE_SIZE; j++) {
                 if(random.nextFloat() < 0.05f){
-                    Vector2 topLeft = FoliageStartingPosition.subtract(new Vector2(i * Block.SIZE, j * Block.SIZE));
+                    Vector2 topLeft = FoliageStartingPosition.subtract(new Vector2(i * Constants.BLOCK_SIZE, j * Constants.BLOCK_SIZE));
 
                     GameObject leafBlock = new Fruit(topLeft);
                     fruits.add(leafBlock);
@@ -75,7 +75,7 @@ public class Tree {
         ArrayList<GameObject> trunk = new ArrayList<>();
 
         for (int i = 1; i <= treeHeight; i++) {
-            float locationY = groundHeight - (i * Block.SIZE);
+            float locationY = groundHeight - (i * Constants.BLOCK_SIZE);
             Vector2 topLeft = new Vector2(locationX, locationY);
 
             GameObject trunkBlock = new Trunk(topLeft);

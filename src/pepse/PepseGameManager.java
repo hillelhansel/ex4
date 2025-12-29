@@ -9,6 +9,7 @@ import danogl.gui.UserInputListener;
 import danogl.gui.WindowController;
 import danogl.gui.rendering.Camera;
 import danogl.util.Vector2;
+import pepse.utils.Constants;
 import pepse.world.Block;
 import pepse.world.Sky;
 import pepse.world.Terrain;
@@ -27,7 +28,6 @@ import java.util.Map;
 
 public class PepseGameManager extends GameManager {
     private final static int DAY_LENGTH = 30;
-    public final static int CHUNK_SIZE = 90;
     private final static int BUFFER = 120;
 
     private final Map<Integer, List<GameObject>> worldObjects = new HashMap<>();
@@ -53,17 +53,17 @@ public class PepseGameManager extends GameManager {
 
     public void infiniteWorld(boolean right) {
         if (right){
-            lastLeftBound += CHUNK_SIZE;
-            lastRightBound += CHUNK_SIZE;
-            createWorld((int) lastRightBound - CHUNK_SIZE, (int) lastRightBound);
-            removeWorld((int) lastLeftBound - CHUNK_SIZE, (int) lastLeftBound);
+            lastLeftBound += Constants.CHUNK_SIZE;
+            lastRightBound += Constants.CHUNK_SIZE;
+            createWorld((int) lastRightBound - Constants.CHUNK_SIZE, (int) lastRightBound);
+            removeWorld((int) lastLeftBound - Constants.CHUNK_SIZE, (int) lastLeftBound);
         }
 
         else if (!right){
-            lastLeftBound -= CHUNK_SIZE;
-            lastRightBound -= CHUNK_SIZE;
-            createWorld((int) lastLeftBound , (int) lastLeftBound + CHUNK_SIZE);
-            removeWorld((int) lastRightBound , (int) lastRightBound + CHUNK_SIZE);
+            lastLeftBound -= Constants.CHUNK_SIZE;
+            lastRightBound -= Constants.CHUNK_SIZE;
+            createWorld((int) lastLeftBound , (int) lastLeftBound + Constants.CHUNK_SIZE);
+            removeWorld((int) lastRightBound , (int) lastRightBound + Constants.CHUNK_SIZE);
         }
     }
 
@@ -93,8 +93,8 @@ public class PepseGameManager extends GameManager {
     }
 
     private void removeWorld(int minX, int maxX){
-        for (int x = minX; x < maxX; x += Block.SIZE) {
-            int key = (x/Block.SIZE) * Block.SIZE;
+        for (int x = minX; x < maxX; x += Constants.BLOCK_SIZE) {
+            int key = (x/Constants.BLOCK_SIZE) * Constants.BLOCK_SIZE;
 
             if (worldObjects.containsKey(key)) {
                 for(GameObject gameObject : worldObjects.get(key)) {
@@ -109,7 +109,7 @@ public class PepseGameManager extends GameManager {
 
     private void addToMap(GameObject gameObject){
         int position = (int) gameObject.getCenter().x();
-        position = (position/Block.SIZE)*Block.SIZE;
+        position = (position/Constants.BLOCK_SIZE) * Constants.BLOCK_SIZE;
 
         worldObjects.putIfAbsent(position, new ArrayList<>());
         worldObjects.get(position).add(gameObject);
@@ -130,11 +130,8 @@ public class PepseGameManager extends GameManager {
     }
 
     private void createInitialWorld(Vector2 windowDimensions){
-        Terrain terrain = new Terrain(windowDimensions, 1);
-        this.terrain = terrain;
-
-        Flora flora = new Flora(terrain::getGroundHeightAt);
-        this.flora = flora;
+        this.terrain  = new Terrain(windowDimensions, 1);
+        this.flora = new Flora(terrain::getGroundHeightAt);
 
         createWorld(-BUFFER, (int) windowDimensions.x() + BUFFER);
         this.lastLeftBound = -BUFFER;

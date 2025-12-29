@@ -5,14 +5,14 @@ import danogl.collisions.Collision;
 import danogl.components.ScheduledTask;
 import danogl.gui.rendering.OvalRenderable;
 import danogl.util.Vector2;
+import pepse.utils.Constants;
 import pepse.utils.GameObjectsTags;
-import pepse.world.Block;
 import pepse.world.avatar.Avatar;
 
 import java.awt.*;
 
 public class Fruit extends GameObject {
-    private final static int FRUIT_RADIUS = Block.SIZE;
+    private final static int FRUIT_RADIUS = Constants.BLOCK_SIZE;
     private static final OvalRenderable renderable = new OvalRenderable(Color.RED);
     private boolean isEaten = false;
 

@@ -1,6 +1,6 @@
 package pepse.world.trees;
 
-import pepse.world.Block;
+import pepse.utils.Constants;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -21,18 +21,18 @@ public class Flora {
         int normalizedMinX = normalize(minX);
         int normalizedMaxX = normalize(maxX);
 
-        for (int locationX = normalizedMinX; locationX <= normalizedMaxX; locationX += Block.SIZE) {
+        for (int locationX = normalizedMinX; locationX <= normalizedMaxX; locationX += Constants.BLOCK_SIZE) {
             Random random = new Random(Objects.hash(locationX, 5));
             if(random.nextFloat() < 0.1f){
                 int groundHeight = (int) Math.floor(groundHeightAt.apply((float) locationX));
                 trees.add(new Tree(locationX, groundHeight));
-                locationX += 3 * Block.SIZE;
+                locationX += 3 * Constants.BLOCK_SIZE;
             }
         }
         return trees;
     }
 
     private int normalize(int x) {
-        return (int) Math.floor((double) x / Block.SIZE) * Block.SIZE;
+        return (int) Math.floor((double) x / Constants.BLOCK_SIZE) * Constants.BLOCK_SIZE;
     }
 }

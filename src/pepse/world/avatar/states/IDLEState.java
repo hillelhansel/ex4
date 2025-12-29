@@ -1,6 +1,7 @@
 package pepse.world.avatar.states;
 
 import danogl.gui.UserInputListener;
+import pepse.utils.Constants;
 import pepse.world.avatar.Animation;
 import pepse.world.avatar.Avatar;
 import pepse.world.avatar.AvatarState;
@@ -14,7 +15,7 @@ public class IDLEState implements AvatarState {
 
     @Override
     public void update(UserInputListener input, Avatar avatar) {
-        avatar.restoreEnergy(1f);
+        avatar.restoreEnergy(Constants.IDLE_ENERGY_RESTORE);
         avatar.transform().setVelocityX(0);
     }
 }

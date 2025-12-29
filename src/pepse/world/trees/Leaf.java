@@ -5,6 +5,7 @@ import danogl.components.Transition;
 import danogl.gui.rendering.RectangleRenderable;
 import danogl.util.Vector2;
 import pepse.utils.ColorSupplier;
+import pepse.utils.Constants;
 import pepse.utils.GameObjectsTags;
 import pepse.world.Block;
 
@@ -42,8 +43,8 @@ public class Leaf extends Block {
         new Transition<>(
                 this,
                 (Float val) -> this.setDimensions(new Vector2(val, val)),
-                (float)Block.SIZE,
-                (float)Block.SIZE - 2f,
+                (float) Constants.BLOCK_SIZE,
+                (float)Constants.BLOCK_SIZE - 2f,
                 Transition.LINEAR_INTERPOLATOR_FLOAT,
                 3f,
                 Transition.TransitionType.TRANSITION_BACK_AND_FORTH,
