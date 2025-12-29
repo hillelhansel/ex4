@@ -25,6 +25,13 @@ import java.util.List;
 
 public class PepseGameManager extends GameManager {
     private final static int DAY_LENGTH = 30;
+    private GameObject avatar;
+    private Terrain terrain;
+    private Flora flora;
+
+    private float lastAvatarPositon;
+    private float lastLeftBound;
+    private float lastRightBound;
 
     @Override
     public void initializeGame(ImageReader imageReader,
@@ -51,30 +58,54 @@ public class PepseGameManager extends GameManager {
         gameObjects().addGameObject(sunHalo, Layer.BACKGROUND + 1);
 
         Terrain terrain = new Terrain(windowDimensions, 1);
-        List<Block> blocks = terrain.createInRange(-100, windowDimensionX + 100);
-        blocks.forEach(block -> gameObjects().addGameObject(block, Layer.STATIC_OBJECTS));
+        this.terrain = terrain;
 
         Flora flora = new Flora(terrain::getGroundHeightAt);
-        ArrayList<Tree> forrest = flora.createInRange(-100, windowDimensionX + 100);
+        this.flora = flora;
+        createWorld(-120, windowDimensionX + 120);
+        this.lastLeftBound = -120;
+        this.lastRightBound = 120;
+
+        float startingPointX = windowDimensionX / 2f;
+        Vector2 startingPoint = new Vector2(startingPointX, terrain.getGroundHeightAt(startingPointX));
+        this.lastAvatarPositon = startingPointX;
+
+        GameObject avatar = new Avatar(startingPoint, inputListener, imageReader, energyUI::updateEnergy);
+        gameObjects().addGameObject(avatar, Layer.DEFAULT);
+        this.avatar = avatar;
+
+        Vector2 offset = windowController.getWindowDimensions().mult(0.5f).subtract(startingPoint);
+        setCamera(new Camera(avatar, offset,
+                windowDimensions, windowDimensions));
+    }
+
+    @Override
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        if (avatar.getCenter().x() > lastAvatarPositon + 90){
+            createWorld((int) lastRightBound, (int) lastRightBound + 120);
+            lastLeftBound += 120;
+            lastRightBound += 120;
+        }
+
+        if (avatar.getCenter().x() < lastAvatarPositon - 90){
+            createWorld((int) lastLeftBound, (int) lastLeftBound + 120);
+            lastLeftBound -= 120;
+            lastRightBound -= 120;
+        }
+        lastAvatarPositon = avatar.getCenter().x();
+    }
+
+    private void createWorld(int minX, int maxX){
+        List<Block> blocks = terrain.createInRange(minX, maxX);
+        blocks.forEach(block -> gameObjects().addGameObject(block, Layer.STATIC_OBJECTS));
+
+        ArrayList<Tree> forrest = flora.createInRange(minX, maxX);
         forrest.forEach(tree -> {
             tree.getTrunk().forEach(trunk -> gameObjects().addGameObject(trunk, Layer.STATIC_OBJECTS));
             tree.getLeafs().forEach(leaf -> gameObjects().addGameObject(leaf, Layer.BACKGROUND));
             tree.getFruits().forEach(fruit -> gameObjects().addGameObject(fruit, Layer.DEFAULT));
         });
-
-        float startingPointX = windowDimensionX / 2f;
-        Vector2 startingPoint = new Vector2(startingPointX, terrain.getGroundHeightAt(startingPointX));
-
-        GameObject avatar = new Avatar(startingPoint, inputListener, imageReader, energyUI::updateEnergy);
-        gameObjects().addGameObject(avatar, Layer.DEFAULT);
-
-        Vector2 offset = windowController.getWindowDimensions().mult(0.5f).subtract(startingPoint);
-        setCamera(new Camera(avatar, offset,
-                windowDimensions, windowDimensions));
-
-//        if (avatar.getCenter().x() > startingPointX + 30 ||  avatar.getCenter().x() < startingPointX - 30) {
-//            terrain.createInRange();
-//        }
     }
 
     public static void main(String[] args) {

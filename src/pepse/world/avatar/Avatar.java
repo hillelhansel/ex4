@@ -34,7 +34,7 @@ public class Avatar extends GameObject {
     public Avatar(Vector2 topLeftCorner, UserInputListener input, ImageReader imageReader, Consumer<Float> onEnergyChange) {
         super(topLeftCorner.subtract(AVATAR_DIMENSIONS.add(new Vector2(0, 40))),
                 AVATAR_DIMENSIONS,
-                imageReader.readImage("assets/avatar/idle_0.png", true));
+                imageReader.readImage("assets/idle_0.png", true));
 
         this.input = input;
         this.energy = new Energy(onEnergyChange);
