@@ -38,7 +38,10 @@ public class Tree {
         fruits.forEach(fruit -> addGameObjectFunc.accept(fruit, Layer.DEFAULT));
     }
 
-    private ArrayList<GameObject> createFoliageObjects(Vector2 startPos, float probability, Function<Vector2, GameObject> objectFactory) {
+    private ArrayList<GameObject> createFoliageObjects(Vector2 startPos,
+                                                       float probability,
+                                                       Function<Vector2,
+                                                       GameObject> objectFactory) {
         ArrayList<GameObject> objects = new ArrayList<>();
 
         for (int i = 0; i < FOLIAGE_SIZE; i++) {
