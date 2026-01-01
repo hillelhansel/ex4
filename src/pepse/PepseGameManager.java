@@ -10,6 +10,7 @@ import danogl.gui.WindowController;
 import danogl.gui.rendering.Camera;
 import danogl.util.Vector2;
 import pepse.utils.Constants;
+import pepse.utils.GameObjectsTags;
 import pepse.world.Block;
 import pepse.world.Sky;
 import pepse.world.Terrain;
@@ -78,32 +79,49 @@ public class PepseGameManager extends GameManager {
         }
     }
 
-    private void createWorld(int minX, int maxX){
+    private void createWorld(int minX, int maxX) {
         List<Block> blocks = terrain.createInRange(minX, maxX);
-        blocks.forEach(block -> {
-            gameObjects().addGameObject(block, Layer.STATIC_OBJECTS);
-            addToMap(block);
-        });
+        blocks.forEach(this::addWorldObjectToGame);
 
-        ArrayList<Tree> forrest = flora.createInRange(minX, maxX);
-        forrest.forEach(tree -> tree.create((obj, layer) -> {
-            gameObjects().addGameObject(obj, layer);
-            addToMap(obj);
-        }));
+        ArrayList<Tree> forest = flora.createInRange(minX, maxX);
+        for (Tree tree : forest) {
+            tree.forEach(this::addWorldObjectToGame);
+        }
     }
 
-    private void removeWorld(int minX, int maxX){
+    private void addWorldObjectToGame(GameObject gameObject) {
+        int layer = getLayerForObject(gameObject);
+        gameObjects().addGameObject(gameObject, layer);
+        addToMap(gameObject);
+    }
+
+    private void removeWorld(int minX, int maxX) {
         for (int x = minX; x < maxX; x += Constants.BLOCK_SIZE) {
             int key = (int) Math.floor((double) x / Constants.BLOCK_SIZE) * Constants.BLOCK_SIZE;
 
             if (worldObjects.containsKey(key)) {
-                for(GameObject gameObject : worldObjects.get(key)) {
-                    gameObjects().removeGameObject(gameObject, Layer.DEFAULT);
-                    gameObjects().removeGameObject(gameObject, Layer.STATIC_OBJECTS);
-                    gameObjects().removeGameObject(gameObject, Layer.BACKGROUND);
+                for (GameObject gameObject : worldObjects.get(key)) {
+                    int layer = getLayerForObject(gameObject);
+                    gameObjects().removeGameObject(gameObject, layer);
                 }
                 worldObjects.remove(key);
             }
+        }
+    }
+
+    private int getLayerForObject(GameObject gameObject) {
+        GameObjectsTags tag = GameObjectsTags.valueOf(gameObject.getTag());
+
+        switch (tag) {
+            case FRUIT:
+                return Layer.DEFAULT;
+            case LEAF:
+                return Layer.BACKGROUND;
+            case TRUNK:
+            case GROUND:
+                return Layer.STATIC_OBJECTS;
+            default:
+                return Layer.DEFAULT;
         }
     }
 

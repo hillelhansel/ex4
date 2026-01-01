@@ -1,19 +1,19 @@
 package pepse.world.trees;
 
 import danogl.GameObject;
-import danogl.collisions.Layer;
 import danogl.util.Vector2;
 import pepse.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
-import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * Represents a single tree structure in the game world.
  */
-public class Tree {
+public class Tree implements Iterable<GameObject>{
     private static final int FOLIAGE_SIZE = 8;
     private static final float LEAF_PROBABILITY = 0.5f;
     private static final float FRUIT_PROBABILITY = 0.1f;
@@ -34,7 +34,6 @@ public class Tree {
         this.random = random;
         int treeHeight = random.nextInt(4) + 4;
         this.trunk = createTrunk(locationX, groundHeight, treeHeight);
-
         Vector2 foliageStartingPosition = new Vector2((float) (locationX + 3.5 * Constants.BLOCK_SIZE),
                 groundHeight - treeHeight * Constants.BLOCK_SIZE);
         this.leafs = createFoliageObjects(foliageStartingPosition, LEAF_PROBABILITY, Leaf::new);
@@ -42,13 +41,14 @@ public class Tree {
     }
 
     /**
-     * Adds the tree's components to the game using the provided callback.
-     * @param addGameObjectFunc A callback function to add game objects to specific layers.
+     * create an iterator thar iterate over trunk array, leaf array and fruit array
+     * @return the iterator
      */
-    public void create(BiConsumer<GameObject, Integer> addGameObjectFunc) {
-        trunk.forEach(trunkBlock -> addGameObjectFunc.accept(trunkBlock, Layer.STATIC_OBJECTS));
-        leafs.forEach(leaf -> addGameObjectFunc.accept(leaf, Layer.BACKGROUND));
-        fruits.forEach(fruit -> addGameObjectFunc.accept(fruit, Layer.DEFAULT));
+    @Override
+    public Iterator<GameObject> iterator() {
+        return Stream.of(trunk, leafs, fruits)
+                .flatMap(ArrayList::stream)
+                .iterator();
     }
 
     private ArrayList<GameObject> createFoliageObjects(Vector2 startPos,
