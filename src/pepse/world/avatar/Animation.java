@@ -54,8 +54,17 @@ public class Animation {
      * Defines the different types of animations available for the avatar.
      */
     public enum AnimationType {
+        /**
+         * Represents the run state.
+         */
         RUN,
+        /**
+         * Represents the idle state.
+         */
         IDLE,
+        /**
+         * Represents the jump state.
+         */
         JUMP
     }
 }

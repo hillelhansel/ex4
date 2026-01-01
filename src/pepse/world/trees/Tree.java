@@ -6,7 +6,6 @@ import danogl.util.Vector2;
 import pepse.utils.Constants;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -27,7 +26,6 @@ public class Tree {
 
     /**
      * Constructs a new Tree instance.
-     * Generates the trunk, leaves, and fruits based on the specified location and randomness.
      * @param locationX    The x-coordinate of the tree's base.
      * @param groundHeight The y-coordinate of the ground where the tree is planted.
      * @param random       A random number generator used for height and foliage distribution.
@@ -45,7 +43,6 @@ public class Tree {
 
     /**
      * Adds the tree's components to the game using the provided callback.
-     * Distributes trunk, leaves, and fruits to their respective game layers.
      * @param addGameObjectFunc A callback function to add game objects to specific layers.
      */
     public void create(BiConsumer<GameObject, Integer> addGameObjectFunc) {

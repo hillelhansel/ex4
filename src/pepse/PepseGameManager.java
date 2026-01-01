@@ -86,12 +86,10 @@ public class PepseGameManager extends GameManager {
         });
 
         ArrayList<Tree> forrest = flora.createInRange(minX, maxX);
-        forrest.forEach(tree -> {
-            tree.create((obj, layer) -> {
-                gameObjects().addGameObject(obj, layer);
-                addToMap(obj);
-            });
-        });
+        forrest.forEach(tree -> tree.create((obj, layer) -> {
+            gameObjects().addGameObject(obj, layer);
+            addToMap(obj);
+        }));
     }
 
     private void removeWorld(int minX, int maxX){

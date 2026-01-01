@@ -43,7 +43,7 @@ public class Avatar extends GameObject {
      * @param input          The listener for reading user keyboard input.
      * @param imageReader    Used to load the avatar's animation assets.
      * @param onEnergyChange A callback to update the UI whenever energy levels change.
-     * @param onAvatarMove   A callback triggered when the avatar crosses a chunk boundary, used for infinite world generation.
+     * @param onAvatarMove   A callback triggered when the avatar crosses a chunk boundary
      */
     public Avatar(Vector2 topLeftCorner,
                   UserInputListener input,
