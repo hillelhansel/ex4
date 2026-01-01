@@ -41,17 +41,18 @@ public class JumpState implements AvatarState {
 
         if (spacePressed && !spaceWasPressed) {
 
-            if (avatar.isOnGround() && avatar.hasEnergy(Constants.ONE_JUMP_ENERGY_COST)) {
-                avatar.consumeEnergy(Constants.ONE_JUMP_ENERGY_COST);
-                avatar.setVelocityY(JUMP_VELOCITY);
+            if (avatar.isOnGround()) {
+                if(avatar.tryConsumeEnergy(Constants.ONE_JUMP_ENERGY_COST)){
+                    avatar.setVelocityY(JUMP_VELOCITY);
+                }
             }
 
-            else if (avatar.hasEnergy(Constants.DOUBLE_JUMP_ENERGY_COST) && avatar.isFalling()) {
-                avatar.consumeEnergy(Constants.DOUBLE_JUMP_ENERGY_COST);
-                avatar.setVelocityY(JUMP_VELOCITY);
+            else if (avatar.isFalling()) {
+                if(avatar.tryConsumeEnergy(Constants.DOUBLE_JUMP_ENERGY_COST)){
+                    avatar.setVelocityY(JUMP_VELOCITY);
+                }
             }
         }
-
         spaceWasPressed = spacePressed;
     }
 }

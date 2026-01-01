@@ -15,8 +15,8 @@ import java.util.stream.Stream;
  */
 public class Tree implements Iterable<GameObject>{
     private static final int FOLIAGE_SIZE = 8;
-    private static final float LEAF_PROBABILITY = 0.5f;
-    private static final float FRUIT_PROBABILITY = 0.1f;
+    private static final float LEAF_PROBABILITY = 0.4f;
+    private static final float FRUIT_PROBABILITY = 0.05f;
 
     private final ArrayList<GameObject> trunk;
     private final ArrayList<GameObject> leafs;

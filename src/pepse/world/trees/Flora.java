@@ -26,7 +26,7 @@ public class Flora {
     }
 
     /**
-     * Generates a list of trees within the specified x-coordinate range.
+     * Generates a list of game objects within the specified x-coordinate range.
      * @param minX The starting x-coordinate.
      * @param maxX The ending x-coordinate.
      * @return A list of generated trees.
@@ -38,7 +38,7 @@ public class Flora {
         int normalizedMaxX = normalize(maxX);
 
         for (int x = normalizedMinX; x <= normalizedMaxX; x += Constants.BLOCK_SIZE) {
-            if (random.nextInt(10) == 0) {
+            if (random.nextInt(20) == 0) {
                 float groundHeight = groundHeightAt.apply((float) x);
 
                 Tree tree = new Tree(x, (int) groundHeight, random);

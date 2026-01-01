@@ -48,7 +48,7 @@ public class RunState implements AvatarState {
         avatar.setVelocityX(xVel);
 
         if (avatar.isOnGround() && xVel != 0) {
-            avatar.consumeEnergy(Constants.RUN_ENERGY_COST);
+            avatar.tryConsumeEnergy(Constants.RUN_ENERGY_COST);
         }
     }
 }

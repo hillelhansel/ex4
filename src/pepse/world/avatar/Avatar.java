@@ -107,7 +107,7 @@ public class Avatar extends GameObject implements AvatarController {
 
     /**
      * Retrieves the specific animation renderable for a given state.
-     * @param animationName The type of animation required (e.g., RUN, JUMP).
+     * @param animationName The type of animation required.
      * @return The Renderable object for the requested animation.
      */
     @Override
@@ -116,8 +116,8 @@ public class Avatar extends GameObject implements AvatarController {
     }
 
     /**
-     * Checks if the avatar is currently falling (moving downwards).
-     * @return True if the vertical velocity is positive (down), false otherwise.
+     * Checks if the avatar is currently falling.
+     * @return True if the vertical velocity is positive, false otherwise.
      */
     @Override
     public boolean isFalling() {
@@ -131,26 +131,22 @@ public class Avatar extends GameObject implements AvatarController {
      */
     @Override
     public boolean isOnGround() {
-        return Math.abs(getVelocity().y()) < 1e-3;
+        return Math.abs(getVelocity().y()) < 0;
     }
 
     /**
-     * Checks if the avatar possesses at least the specified amount of energy.
-     * @param amount The amount of energy to check for.
-     * @return True if current energy is greater than or equal to amount.
-     */
-    @Override
-    public boolean hasEnergy(float amount) {
-        return energy.hasEnoughEnergy(amount);
-    }
-
-    /**
-     * Reduces the avatar's energy level by the specified amount.
+     * Attempts to consume a specific amount of energy in an atomic operation.
+     * Checks if the avatar has enough energy, and if so, reduces it.
      * @param amount The amount of energy to consume.
+     * @return True if the energy was successfully consumed, False if there wasn't enough energy.
      */
     @Override
-    public void consumeEnergy(float amount) {
-        energy.consumeEnergy(amount);
+    public boolean tryConsumeEnergy(float amount) {
+        if(energy.hasEnoughEnergy(amount)) {
+            energy.consumeEnergy(amount);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -162,60 +158,67 @@ public class Avatar extends GameObject implements AvatarController {
         energy.addEnergy(amount);
     }
 
+    /**
+     * Updates the avatar's current visual representation.
+     * @param animation The animation type to set as the active renderer.
+     */
     @Override
     public void setRenderer(Animation.AnimationType animation) {
         renderer().setRenderable(getAnimation(animation));
     }
 
+    /**
+     * Sets the avatar's velocity on the Y axis.
+     * @param velocity The velocity to set.
+     */
     @Override
     public void setVelocityY(float velocity) {
         transform().setVelocityY(velocity);
     }
 
+    /**
+     * Sets the avatar's velocity on the X axis.
+     * @param velocity The velocity to set.
+     */
     @Override
     public void setVelocityX(float velocity) {
         transform().setVelocityX(velocity);
     }
 
+    /**
+     * Sets whether the avatar's image should be flipped horizontally.
+     * @param flipped True to flip the image (usually for facing left),
+     * False to render it normally (usually for facing right).
+     */
     @Override
     public void setFlippedHorizontally(boolean flipped) {
         renderer().setIsFlippedHorizontally(flipped);
     }
 
     private AvatarState decideState() {
-        boolean onGround = isOnGround();
-        boolean spaceKeyPressed = input.isKeyPressed(KeyEvent.VK_SPACE);
-        boolean rightKeyPressed = input.isKeyPressed(KeyEvent.VK_RIGHT);
-        boolean leftKeyPressed = input.isKeyPressed(KeyEvent.VK_LEFT);
+        boolean spacePressed = input.isKeyPressed(KeyEvent.VK_SPACE);
+        boolean leftPressed = input.isKeyPressed(KeyEvent.VK_LEFT);
+        boolean rightPressed = input.isKeyPressed(KeyEvent.VK_RIGHT);
 
-        boolean hasHorizontalInput = rightKeyPressed || leftKeyPressed;
+        boolean isMovingHorizontally = (leftPressed || rightPressed) && !(leftPressed && rightPressed);
 
-        if (!onGround) {
-            if (spaceKeyPressed
-                    && hasEnergy(Constants.DOUBLE_JUMP_ENERGY_COST)) {
+        if (spacePressed) {
+            if (isOnGround() && hasEnergy(Constants.ONE_JUMP_ENERGY_COST)) {
                 return jumpState;
             }
-
-            if(leftKeyPressed && rightKeyPressed){
+            if (!isOnGround() && hasEnergy(Constants.DOUBLE_JUMP_ENERGY_COST)) {
                 return jumpState;
             }
+        }
 
-            if (hasHorizontalInput) {
+        if (!isOnGround()) {
+            if (isMovingHorizontally) {
                 return runState;
             }
-
             return jumpState;
         }
 
-        if (spaceKeyPressed && hasEnergy(Constants.ONE_JUMP_ENERGY_COST)) {
-            return jumpState;
-        }
-
-        if(leftKeyPressed && rightKeyPressed){
-            return idleState;
-        }
-
-        if (hasHorizontalInput && hasEnergy(Constants.RUN_ENERGY_COST)) {
+        if (isMovingHorizontally && hasEnergy(Constants.RUN_ENERGY_COST)) {
             return runState;
         }
 
@@ -228,5 +231,9 @@ public class Avatar extends GameObject implements AvatarController {
         }
         currentState = newState;
         currentState.onEnter(this);
+    }
+
+    private boolean hasEnergy(float amount) {
+        return energy.hasEnoughEnergy(amount);
     }
 }
