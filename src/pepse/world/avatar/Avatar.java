@@ -156,6 +156,22 @@ public class Avatar extends GameObject {
         energy.addEnergy(amount);
     }
 
+    public void setRenderer(Animation.AnimationType animation) {
+        renderer().setRenderable(getAnimation(animation));
+    }
+
+    public void setVelocityY(float velocity) {
+        transform().setVelocityY(velocity);
+    }
+
+    public void setVelocityX(float velocity) {
+        transform().setVelocityX(velocity);
+    }
+
+    public void setFlippedHorizontally(boolean flipped) {
+        renderer().setIsFlippedHorizontally(flipped);
+    }
+
     private AvatarState decideState() {
         boolean onGround = isOnGround();
         boolean spaceKeyPressed = input.isKeyPressed(KeyEvent.VK_SPACE);

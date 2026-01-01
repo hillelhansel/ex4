@@ -21,7 +21,7 @@ public class RunState implements AvatarState {
      */
     @Override
     public void onEnter(Avatar avatar) {
-        avatar.renderer().setRenderable(avatar.getAnimation(Animation.AnimationType.RUN));
+        avatar.setRenderer(Animation.AnimationType.RUN);
     }
 
     /**
@@ -37,15 +37,15 @@ public class RunState implements AvatarState {
 
         if (input.isKeyPressed(KeyEvent.VK_RIGHT)) {
             xVel += SPEED;
-            avatar.renderer().setIsFlippedHorizontally(false);
+            avatar.setFlippedHorizontally(false);
         }
 
         if (input.isKeyPressed(KeyEvent.VK_LEFT)) {
             xVel -= SPEED;
-            avatar.renderer().setIsFlippedHorizontally(true);
+            avatar.setFlippedHorizontally(true);
         }
 
-        avatar.transform().setVelocityX(xVel);
+        avatar.setVelocityX(xVel);
 
         if (avatar.isOnGround() && xVel != 0) {
             avatar.consumeEnergy(Constants.RUN_ENERGY_COST);

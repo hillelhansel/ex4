@@ -23,8 +23,8 @@ public class JumpState implements AvatarState {
      */
     @Override
     public void onEnter(Avatar avatar) {
-        avatar.transform().setVelocityX(0);
-        avatar.renderer().setRenderable(avatar.getAnimation(Animation.AnimationType.JUMP));
+        avatar.setVelocityX(0);
+        avatar.setRenderer(Animation.AnimationType.JUMP);
         spaceWasPressed = false;
     }
 
@@ -43,12 +43,12 @@ public class JumpState implements AvatarState {
 
             if (avatar.isOnGround() && avatar.hasEnergy(Constants.ONE_JUMP_ENERGY_COST)) {
                 avatar.consumeEnergy(Constants.ONE_JUMP_ENERGY_COST);
-                avatar.transform().setVelocityY(JUMP_VELOCITY);
+                avatar.setVelocityY(JUMP_VELOCITY);
             }
 
             else if (avatar.hasEnergy(Constants.DOUBLE_JUMP_ENERGY_COST) && avatar.isFalling()) {
                 avatar.consumeEnergy(Constants.DOUBLE_JUMP_ENERGY_COST);
-                avatar.transform().setVelocityY(JUMP_VELOCITY);
+                avatar.setVelocityY(JUMP_VELOCITY);
             }
         }
 

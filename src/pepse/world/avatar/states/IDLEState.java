@@ -18,7 +18,7 @@ public class IDLEState implements AvatarState {
      */
     @Override
     public void onEnter(Avatar avatar) {
-        avatar.renderer().setRenderable(avatar.getAnimation(Animation.AnimationType.IDLE));
+        avatar.setRenderer(Animation.AnimationType.IDLE);
     }
 
     /**
@@ -30,6 +30,6 @@ public class IDLEState implements AvatarState {
     @Override
     public void update(UserInputListener input, Avatar avatar) {
         avatar.restoreEnergy(Constants.IDLE_ENERGY_RESTORE);
-        avatar.transform().setVelocityX(0);
+        avatar.setVelocityX(0);
     }
 }
