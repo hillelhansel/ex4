@@ -4,6 +4,7 @@ import danogl.GameObject;
 import danogl.components.CoordinateSpace;
 import danogl.gui.rendering.TextRenderable;
 import danogl.util.Vector2;
+import pepse.utils.GameObjectsTags;
 
 import java.awt.*;
 
@@ -25,6 +26,7 @@ public class EnergyUI extends GameObject{
         energyRenderable.setColor(Color.BLACK);
         setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
         this.renderer().setRenderable(energyRenderable);
+        setTag(String.valueOf(GameObjectsTags.ENERGYUI));
     }
 
     /**

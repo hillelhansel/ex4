@@ -1,10 +1,10 @@
 package pepse.world.trees;
 
+import danogl.GameObject;
 import pepse.utils.Constants;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.Random;
 import java.util.function.Function;
 
@@ -12,9 +12,7 @@ import java.util.function.Function;
  * Responsible for generating trees within the game world based on terrain height.
  */
 public class Flora {
-    private static final float TREE_PROBABILITY = 0.1f;
-
-    private final int seed;
+    private final Random random;
     private final Function<Float, Float> groundHeightAt;
 
     /**
@@ -24,7 +22,7 @@ public class Flora {
      */
     public Flora(Function<Float, Float> groundHeightAt, int seed) {
         this.groundHeightAt = groundHeightAt;
-        this.seed = seed;
+        this.random = new Random(seed);
     }
 
     /**
@@ -33,21 +31,23 @@ public class Flora {
      * @param maxX The ending x-coordinate.
      * @return A list of generated trees.
      */
-    public ArrayList<Tree> createInRange(int minX, int maxX){
-        ArrayList<Tree> trees = new ArrayList<>();
+    public ArrayList<GameObject> createInRange(int minX, int maxX){
+        ArrayList<GameObject> vegetation = new ArrayList<>();
 
         int normalizedMinX = normalize(minX);
         int normalizedMaxX = normalize(maxX);
 
-        for (int locationX = normalizedMinX; locationX < normalizedMaxX; locationX += Constants.BLOCK_SIZE) {
-            Random random = new Random(Objects.hash(locationX * 3, seed));
-            if(random.nextFloat() < TREE_PROBABILITY){
-                int groundHeight = (int) Math.floor(groundHeightAt.apply((float) locationX));
-                trees.add(new Tree(locationX, groundHeight, random));
-                locationX += 4 * Constants.BLOCK_SIZE;
+        for (int x = normalizedMinX; x <= normalizedMaxX; x += Constants.BLOCK_SIZE) {
+            if (random.nextInt(10) == 0) {
+                float groundHeight = groundHeightAt.apply((float) x);
+
+                Tree tree = new Tree(x, (int) groundHeight, random);
+                for (GameObject part : tree) {
+                    vegetation.add(part);
+                }
             }
         }
-        return trees;
+        return vegetation;
     }
 
     private int normalize(int x) {

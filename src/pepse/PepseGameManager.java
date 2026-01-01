@@ -20,7 +20,6 @@ import pepse.world.daynight.Night;
 import pepse.world.daynight.Sun;
 import pepse.world.daynight.SunHalo;
 import pepse.world.trees.Flora;
-import pepse.world.trees.Tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -83,10 +82,8 @@ public class PepseGameManager extends GameManager {
         List<Block> blocks = terrain.createInRange(minX, maxX);
         blocks.forEach(this::addWorldObjectToGame);
 
-        ArrayList<Tree> forest = flora.createInRange(minX, maxX);
-        for (Tree tree : forest) {
-            tree.forEach(this::addWorldObjectToGame);
-        }
+        ArrayList<GameObject> vegetation = flora.createInRange(minX, maxX);
+        vegetation.forEach(this::addWorldObjectToGame);
     }
 
     private void addWorldObjectToGame(GameObject gameObject) {
@@ -110,18 +107,29 @@ public class PepseGameManager extends GameManager {
     }
 
     private int getLayerForObject(GameObject gameObject) {
-        GameObjectsTags tag = GameObjectsTags.valueOf(gameObject.getTag());
+        try {
+            GameObjectsTags tag = GameObjectsTags.valueOf(gameObject.getTag());
 
-        switch (tag) {
-            case FRUIT:
-                return Layer.DEFAULT;
-            case LEAF:
-                return Layer.BACKGROUND;
-            case TRUNK:
-            case GROUND:
-                return Layer.STATIC_OBJECTS;
-            default:
-                return Layer.DEFAULT;
+            switch (tag) {
+                case LEAF, SKY, SUN, SUNHALO:
+                    return Layer.BACKGROUND;
+
+                case TRUNK, GROUND:
+                    return Layer.STATIC_OBJECTS;
+
+                case NIGHT:
+                    return Layer.FOREGROUND;
+
+                case ENERGYUI:
+                    return Layer.UI;
+
+                case FRUIT, AVATAR:
+                default:
+                    return Layer.DEFAULT;
+            }
+        }
+        catch (IllegalArgumentException e) {
+            return Layer.DEFAULT;
         }
     }
 
@@ -134,16 +142,16 @@ public class PepseGameManager extends GameManager {
 
     private void createBackground(Vector2 windowDimensions){
         GameObject sky = Sky.create(windowDimensions);
-        gameObjects().addGameObject(sky, Layer.BACKGROUND);
+        gameObjects().addGameObject(sky, getLayerForObject(sky));
 
         GameObject night = Night.create(windowDimensions, DAY_LENGTH);
-        gameObjects().addGameObject(night, Layer.FOREGROUND);
+        gameObjects().addGameObject(night, getLayerForObject(night));
 
         GameObject sun = Sun.create(windowDimensions, DAY_LENGTH);
-        gameObjects().addGameObject(sun, Layer.BACKGROUND);
+        gameObjects().addGameObject(sun, getLayerForObject(sun));
 
         GameObject sunHalo = SunHalo.create(sun);
-        gameObjects().addGameObject(sunHalo, Layer.BACKGROUND + 1);
+        gameObjects().addGameObject(sunHalo, getLayerForObject(sunHalo));
     }
 
     private void createInitialWorld(Vector2 windowDimensions){
@@ -162,14 +170,14 @@ public class PepseGameManager extends GameManager {
         Vector2 startingPoint = new Vector2(startingPointX, terrain.getGroundHeightAt(startingPointX));
 
         EnergyUI energyUI = new EnergyUI();
-        gameObjects().addGameObject(energyUI, Layer.UI);
+        gameObjects().addGameObject(energyUI, getLayerForObject(energyUI));
 
         GameObject avatar = new Avatar(startingPoint,
                 inputListener,
                 imageReader,
                 energyUI::updateEnergy,
                 this::infiniteWorld);
-        gameObjects().addGameObject(avatar, Layer.DEFAULT);
+        gameObjects().addGameObject(avatar, getLayerForObject(avatar));
 
         Vector2 offset = windowDimensions.mult(0.5f).subtract(startingPoint);
         setCamera(new Camera(avatar, offset, windowDimensions, windowDimensions));

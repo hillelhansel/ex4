@@ -39,5 +39,9 @@ public enum GameObjectsTags {
     /**
      * Represents the sky tag.
      */
-    SKY
+    SKY,
+    /**
+     * Represents the energyUI tag.
+     */
+    ENERGYUI
 }
