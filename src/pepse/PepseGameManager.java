@@ -32,7 +32,7 @@ import java.util.Map;
 public class PepseGameManager extends GameManager {
     private final static int DAY_LENGTH = 30;
     private final static int BUFFER = 300;
-    private final static int SEED = 10;
+    private final static int SEED = 4;
 
     private final Map<Integer, List<GameObject>> worldObjects = new HashMap<>();
 

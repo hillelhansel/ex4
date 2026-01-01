@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
 /**
  * Represents a single tree structure in the game world.
@@ -46,9 +45,13 @@ public class Tree implements Iterable<GameObject>{
      */
     @Override
     public Iterator<GameObject> iterator() {
-        return Stream.of(trunk, leafs, fruits)
-                .flatMap(ArrayList::stream)
-                .iterator();
+        ArrayList<GameObject> allParts = new ArrayList<>();
+
+        allParts.addAll(trunk);
+        allParts.addAll(leafs);
+        allParts.addAll(fruits);
+
+        return allParts.iterator();
     }
 
     private ArrayList<GameObject> createFoliageObjects(Vector2 startPos,

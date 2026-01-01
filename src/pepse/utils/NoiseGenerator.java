@@ -1,11 +1,13 @@
 package pepse.utils;
 
+import java.util.Random;
+
 public class NoiseGenerator {
-    private final double seed;
+    private double seed;
     private long default_size;
     private int[] p;
     private int[] permutation;
-    private final double startPoint;
+    private double startPoint;
 
     /**
      * The constructor of the NoiseGenerator class.
@@ -88,7 +90,7 @@ public class NoiseGenerator {
         // Offset each coordinate by the seed value
         x += this.seed;
         y += this.seed;
-        x += this.seed;
+        y += this.seed;
 
         int X = (int) Math.floor(x) & 255; // FIND UNIT CUBE THAT
         int Y = (int) Math.floor(y) & 255; // CONTAINS POINT.

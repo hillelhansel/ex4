@@ -131,7 +131,7 @@ public class Avatar extends GameObject implements AvatarController {
      */
     @Override
     public boolean isOnGround() {
-        return Math.abs(getVelocity().y()) < 0;
+        return Math.abs(getVelocity().y()) < 1e-3;
     }
 
     /**
@@ -201,6 +201,13 @@ public class Avatar extends GameObject implements AvatarController {
         boolean rightPressed = input.isKeyPressed(KeyEvent.VK_RIGHT);
 
         boolean isMovingHorizontally = (leftPressed || rightPressed) && !(leftPressed && rightPressed);
+        boolean hasMinEnergyToRun;
+        if (currentState == runState) {
+            hasMinEnergyToRun = hasEnergy(Constants.RUN_ENERGY_COST);
+        }
+        else {
+            hasMinEnergyToRun = hasEnergy(Constants.MIN_ENERGY_TO_RUN);
+        }
 
         if (spacePressed) {
             if (isOnGround() && hasEnergy(Constants.ONE_JUMP_ENERGY_COST)) {
@@ -218,7 +225,7 @@ public class Avatar extends GameObject implements AvatarController {
             return jumpState;
         }
 
-        if (isMovingHorizontally && hasEnergy(Constants.RUN_ENERGY_COST)) {
+        if (isMovingHorizontally && hasMinEnergyToRun) {
             return runState;
         }
 

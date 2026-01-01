@@ -18,6 +18,9 @@ public class Constants {
     /** The energy restored per frame while the avatar is idle. */
     public static final float IDLE_ENERGY_RESTORE = 1f;
 
+    /** The minimum energy required for entering the run state. */
+    public static final float MIN_ENERGY_TO_RUN = 10f;
+
     /** The dimension (width and height) of a single square block in pixels. */
     public static final int BLOCK_SIZE = 30;
 
