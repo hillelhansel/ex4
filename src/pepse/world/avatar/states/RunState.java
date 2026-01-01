@@ -3,7 +3,7 @@ package pepse.world.avatar.states;
 import danogl.gui.UserInputListener;
 import pepse.utils.Constants;
 import pepse.world.avatar.Animation;
-import pepse.world.avatar.Avatar;
+import pepse.world.avatar.AvatarController;
 import pepse.world.avatar.AvatarState;
 
 import java.awt.event.KeyEvent;
@@ -20,7 +20,7 @@ public class RunState implements AvatarState {
      * @param avatar The avatar instance entering this state.
      */
     @Override
-    public void onEnter(Avatar avatar) {
+    public void onEnter(AvatarController avatar) {
         avatar.setRenderer(Animation.AnimationType.RUN);
     }
 
@@ -32,7 +32,7 @@ public class RunState implements AvatarState {
      * @param avatar The avatar instance to update.
      */
     @Override
-    public void update(UserInputListener input, Avatar avatar) {
+    public void update(UserInputListener input, AvatarController avatar) {
         float xVel = 0;
 
         if (input.isKeyPressed(KeyEvent.VK_RIGHT)) {

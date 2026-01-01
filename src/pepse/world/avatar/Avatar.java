@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 /**
  * Represents the player-controlled character in the game.
  */
-public class Avatar extends GameObject {
+public class Avatar extends GameObject implements AvatarController {
     private static final Vector2 AVATAR_DIMENSIONS = new Vector2(60, 100);
     private static final float GRAVITY = 800;
 
@@ -110,6 +110,7 @@ public class Avatar extends GameObject {
      * @param animationName The type of animation required (e.g., RUN, JUMP).
      * @return The Renderable object for the requested animation.
      */
+    @Override
     public Renderable getAnimation(Animation.AnimationType animationName) {
         return animation.getAnimation(animationName);
     }
@@ -118,6 +119,7 @@ public class Avatar extends GameObject {
      * Checks if the avatar is currently falling (moving downwards).
      * @return True if the vertical velocity is positive (down), false otherwise.
      */
+    @Override
     public boolean isFalling() {
         return getVelocity().y() > 0;
     }
@@ -127,6 +129,7 @@ public class Avatar extends GameObject {
      * Determined by checking if the vertical velocity is effectively zero.
      * @return True if the avatar is on the ground, false otherwise.
      */
+    @Override
     public boolean isOnGround() {
         return Math.abs(getVelocity().y()) < 1e-3;
     }
@@ -136,6 +139,7 @@ public class Avatar extends GameObject {
      * @param amount The amount of energy to check for.
      * @return True if current energy is greater than or equal to amount.
      */
+    @Override
     public boolean hasEnergy(float amount) {
         return energy.hasEnoughEnergy(amount);
     }
@@ -144,6 +148,7 @@ public class Avatar extends GameObject {
      * Reduces the avatar's energy level by the specified amount.
      * @param amount The amount of energy to consume.
      */
+    @Override
     public void consumeEnergy(float amount) {
         energy.consumeEnergy(amount);
     }
@@ -152,22 +157,27 @@ public class Avatar extends GameObject {
      * Increases the avatar's energy level by the specified amount.
      * @param amount The amount of energy to restore.
      */
+    @Override
     public void restoreEnergy(float amount) {
         energy.addEnergy(amount);
     }
 
+    @Override
     public void setRenderer(Animation.AnimationType animation) {
         renderer().setRenderable(getAnimation(animation));
     }
 
+    @Override
     public void setVelocityY(float velocity) {
         transform().setVelocityY(velocity);
     }
 
+    @Override
     public void setVelocityX(float velocity) {
         transform().setVelocityX(velocity);
     }
 
+    @Override
     public void setFlippedHorizontally(boolean flipped) {
         renderer().setIsFlippedHorizontally(flipped);
     }
@@ -211,7 +221,6 @@ public class Avatar extends GameObject {
 
         return idleState;
     }
-
 
     private void changeState(AvatarState newState) {
         if (currentState == newState){

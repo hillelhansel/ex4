@@ -3,7 +3,7 @@ package pepse.world.avatar.states;
 import danogl.gui.UserInputListener;
 import pepse.utils.Constants;
 import pepse.world.avatar.Animation;
-import pepse.world.avatar.Avatar;
+import pepse.world.avatar.AvatarController;
 import pepse.world.avatar.AvatarState;
 
 import java.awt.event.KeyEvent;
@@ -22,7 +22,7 @@ public class JumpState implements AvatarState {
      * @param avatar The avatar instance entering this state.
      */
     @Override
-    public void onEnter(Avatar avatar) {
+    public void onEnter(AvatarController avatar) {
         avatar.setVelocityX(0);
         avatar.setRenderer(Animation.AnimationType.JUMP);
         spaceWasPressed = false;
@@ -36,7 +36,7 @@ public class JumpState implements AvatarState {
      * @param avatar The avatar instance to update.
      */
     @Override
-    public void update(UserInputListener input, Avatar avatar) {
+    public void update(UserInputListener input, AvatarController avatar) {
         boolean spacePressed = input.isKeyPressed(KeyEvent.VK_SPACE);
 
         if (spacePressed && !spaceWasPressed) {

@@ -3,7 +3,7 @@ package pepse.world.avatar.states;
 import danogl.gui.UserInputListener;
 import pepse.utils.Constants;
 import pepse.world.avatar.Animation;
-import pepse.world.avatar.Avatar;
+import pepse.world.avatar.AvatarController;
 import pepse.world.avatar.AvatarState;
 
 /**
@@ -17,7 +17,7 @@ public class IDLEState implements AvatarState {
      * @param avatar The avatar instance transitioning to this state.
      */
     @Override
-    public void onEnter(Avatar avatar) {
+    public void onEnter(AvatarController avatar) {
         avatar.setRenderer(Animation.AnimationType.IDLE);
     }
 
@@ -28,7 +28,7 @@ public class IDLEState implements AvatarState {
      * @param avatar The avatar instance to update.
      */
     @Override
-    public void update(UserInputListener input, Avatar avatar) {
+    public void update(UserInputListener input, AvatarController avatar) {
         avatar.restoreEnergy(Constants.IDLE_ENERGY_RESTORE);
         avatar.setVelocityX(0);
     }
